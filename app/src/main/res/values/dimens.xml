@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="recycler_view_double_column_spacing">16dp</dimen>
+    <dimen name="recycler_view_minimal_column_spacing">8dp</dimen>
+</resources>
