@@ -1,9 +1,15 @@
 package dev.skyit.yournews.ui.main.newsheadlines
 
+import androidx.arch.core.util.Function
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.soywiz.klock.*
+import dev.skyit.yournews.api.models.headlines.Article
 import dev.skyit.yournews.repository.INewsRepository
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.present
@@ -14,25 +20,36 @@ class NewsHeadlinesViewModel(
     private val newsRepo: INewsRepository
 ) : ViewModel() {
 
-    val newsLive = MutableLiveData<List<ArticleMinimal>>()
+    var newsPagedLive : LiveData<PagedList<ArticleMinimal>>
 
-    fun loadData() {
-        viewModelScope.launch {
-            kotlin.runCatching {
-                newsRepo.getHeadlines("us")
-            }.onSuccess {
-                val minimal = it.map {
-                    val tm = DateTime.parse(it.publishedAt).local
-                    ArticleMinimal(it.title, it.source.name, tm.relativeTime(), it.urlToImage)
-                }
-                newsLive.postValue(minimal)
-            }.onFailure {
-                //TODO
+    private fun initializedPagedListBuilder(config: PagedList.Config):
+            LivePagedListBuilder<Int, ArticleMinimal> {
+
+        val dataSourceFactory = object : DataSource.Factory<Int, Article>() {
+            override fun create(): DataSource<Int, Article> {
+                return newsRepo.headlinesDataSource("us")
             }
+        }.map {
+            it.toMinimal()
         }
+        return LivePagedListBuilder(dataSourceFactory, config)
     }
 
-    fun DateTime.relativeTime() : String {
+    init {
+
+        val config = PagedList.Config.Builder()
+            .setPageSize(10)
+            .setEnablePlaceholders(false)
+            .build()
+        newsPagedLive = initializedPagedListBuilder(config).build()
+    }
+    
+    private fun Article.toMinimal(): ArticleMinimal {
+        val tm = DateTime.parse(publishedAt).local
+        return ArticleMinimal(title, source.name, tm.relativeTime(), urlToImage)
+    }
+
+    private fun DateTime.relativeTime() : String {
         val diff = present - this
         if (diff < 1.hours) {
             return "${diff.minutes.roundToInt()} minutes ago"

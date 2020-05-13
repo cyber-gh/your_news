@@ -3,6 +3,7 @@ package dev.skyit.yournews.api.client
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dev.skyit.yournews.api.models.headlines.Article
 import dev.skyit.yournews.api.models.headlines.NewsListResponse
+import dev.skyit.yournews.repository.datasource.INewsHeadlines
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -25,9 +26,10 @@ interface INewsAPIClient {
 
 
     suspend fun getHeadlines(country: String) : List<Article>
+    suspend fun getHeadlinesPaged(country: String = "us", pageNumber: Int, pageSize: Int) : List<Article>
 }
 
-class NewsAPIClient: INewsAPIClient {
+class NewsAPIClient: INewsAPIClient{
 
     private val apiRoot = "https://newsapi.org/v2/"
     private val contentType =  "application/json".toMediaType()
@@ -63,6 +65,15 @@ class NewsAPIClient: INewsAPIClient {
     override suspend fun getHeadlines(country: String): List<Article> {
         val options = hashMapOf("country" to country)
         return newsAPIService.getHeadlines(options).articles
+    }
+
+    override suspend fun getHeadlinesPaged(country: String, pageNumber: Int, pageSize: Int): List<Article> {
+        val options = hashMapOf(
+            "country" to country,
+            "page" to pageNumber.toString(),
+            "pageSize" to pageSize.toString())
+        return newsAPIService.getHeadlines(options).articles
+
     }
 
 
