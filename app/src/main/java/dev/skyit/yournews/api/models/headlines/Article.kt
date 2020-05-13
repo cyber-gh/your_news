@@ -1,4 +1,4 @@
-package dev.skyit.yournews.api.models
+package dev.skyit.yournews.api.models.headlines
 
 
 import dev.skyit.yournews.api.models.Source

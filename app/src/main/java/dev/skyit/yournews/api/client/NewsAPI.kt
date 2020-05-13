@@ -1,8 +1,8 @@
 package dev.skyit.yournews.api.client
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import dev.skyit.yournews.api.models.Article
-import dev.skyit.yournews.api.models.NewsHeadlinesResponse
+import dev.skyit.yournews.api.models.headlines.Article
+import dev.skyit.yournews.api.models.headlines.NewsListResponse
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -11,12 +11,16 @@ import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 
 interface INewsAPIClient {
     interface NewsAPIService {
         @GET("top-headlines")
-        suspend fun getHeadlines(@Query("country") country: String = "us") : NewsHeadlinesResponse
+        suspend fun getHeadlines(@QueryMap options: Map<String, String>) : NewsListResponse
+
+        @GET("everything")
+        suspend fun searchArticles(@QueryMap options: Map<String, String>) : NewsListResponse
     }
 
 
@@ -57,7 +61,8 @@ class NewsAPIClient: INewsAPIClient {
     }
 
     override suspend fun getHeadlines(country: String): List<Article> {
-        return newsAPIService.getHeadlines(country).articles
+        val options = hashMapOf("country" to country)
+        return newsAPIService.getHeadlines(options).articles
     }
 
 

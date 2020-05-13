@@ -1,12 +1,11 @@
-package dev.skyit.yournews.api.models
+package dev.skyit.yournews.api.models.headlines
 
 
-import dev.skyit.yournews.api.models.Article
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NewsHeadlinesResponse(
+data class NewsListResponse(
     @SerialName("articles")
     val articles: List<Article>,
     @SerialName("status")

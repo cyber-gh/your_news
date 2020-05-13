@@ -1,7 +1,7 @@
 package dev.skyit.yournews.repository
 
 import dev.skyit.yournews.api.client.INewsAPIClient
-import dev.skyit.yournews.api.models.Article
+import dev.skyit.yournews.api.models.headlines.Article
 
 interface INewsRepository {
     suspend fun getHeadlines(country: String) : List<Article>

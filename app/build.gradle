@@ -126,7 +126,13 @@ dependencies {
     //Kotlin Time API, read documentation before using XD
     implementation "com.soywiz.korlibs.klock:klock:1.8.4"
 
+    //Serialization
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // or "kotlin-stdlib-jdk8"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0" // JVM dependency
+
+    //Paged Data source
+    def paging_version = "2.1.2"
+
+    implementation "androidx.paging:paging-runtime:$paging_version" // For Kotlin use paging-runtime-ktx
 
 }
