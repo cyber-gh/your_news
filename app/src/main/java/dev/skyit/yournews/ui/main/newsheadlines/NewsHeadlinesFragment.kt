@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
@@ -19,6 +22,8 @@ import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.utils.RecyclerAdapter
 import dev.skyit.yournews.ui.utils.buildDiffUttil
 import dev.skyit.yournews.ui.utils.setItemSpacing
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsHeadlinesFragment : BaseFragment() {
@@ -36,8 +41,29 @@ class NewsHeadlinesFragment : BaseFragment() {
         return binding.root
     }
 
+    private fun snack(msg: String) {
+        Snackbar.make(binding.root, msg, Snackbar.LENGTH_SHORT).show()
+    }
+    //TODO move these
+    private fun errAlert(msg: String) {
+        AlertDialog.Builder(requireContext()).setTitle("Error").setMessage(msg).show()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.swipeRefresh.setOnRefreshListener {
+            vModel.refreshList()
+        }
+
+        vModel.refreshStatusLive.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                LoadStatus.COMPLETED -> snack("Data reloaded")
+                LoadStatus.FAILED -> errAlert("Unable to load data, check your internet connection")
+            }
+
+            binding.swipeRefresh.isRefreshing = it == LoadStatus.REFRESHING
+        })
 
         adapter = NewsHeadlinesAdapter()
         binding.recyclerView.adapter = adapter
@@ -79,17 +105,5 @@ class NewsHeadlinesAdapter
     }
 
 
-
-}
-
-
-class DiffArticleUtilCallBack : DiffUtil.ItemCallback<ArticleMinimal>() {
-    override fun areItemsTheSame(oldItem: ArticleMinimal, newItem: ArticleMinimal): Boolean {
-        return oldItem.title == newItem.title
-    }
-
-    override fun areContentsTheSame(oldItem: ArticleMinimal, newItem: ArticleMinimal): Boolean {
-        return oldItem == newItem
-    }
 
 }

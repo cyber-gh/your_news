@@ -9,8 +9,8 @@ plugins {
 android {
     compileSdkVersion 29
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
 
     defaultConfig {

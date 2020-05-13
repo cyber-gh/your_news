@@ -10,9 +10,15 @@ import androidx.room.Query
 interface RoomArticlesDao {
 
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg articleEntity: ArticleEntity) : List<Long>
 
     @Query("SELECT * FROM articles where country = :country order by publishedAt desc")
     fun articlesDataSource(country: String): DataSource.Factory<Int, ArticleEntity>
+
+    @Query("Select count(*) from articles where country = :country")
+    suspend fun articlesNr(country: String) : Int
+
+    @Query("delete from articles where country = :country")
+    suspend fun deleteByCountry(country: String)
 }

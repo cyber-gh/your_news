@@ -1,11 +1,8 @@
 package dev.skyit.yournews.ui.main.newsheadlines
 
-import androidx.arch.core.util.Function
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.soywiz.klock.*
@@ -13,6 +10,7 @@ import dev.skyit.yournews.api.models.headlines.Article
 import dev.skyit.yournews.repository.INewsRepository
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.present
+import dev.skyit.yournews.ui.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -20,27 +18,54 @@ class NewsHeadlinesViewModel(
     private val newsRepo: INewsRepository
 ) : ViewModel() {
 
-    var newsPagedLive : LiveData<PagedList<ArticleMinimal>>
+    val newsPagedLive : LiveData<PagedList<ArticleMinimal>>
+
+    val refreshStatusLive = SingleLiveEvent<LoadStatus>().apply { value = LoadStatus.IDLE }
+
+    private val countryName: String = "us"
+    private val pageSize: Int = 5
+
+    fun refreshList() {
+        refreshStatusLive.value = LoadStatus.REFRESHING
+        viewModelScope.launch {
+            val didRefresh = newsRepo.resetArticles(countryName)
+            if (didRefresh) {
+                refreshStatusLive.postValue(LoadStatus.COMPLETED)
+            } else {
+                refreshStatusLive.postValue(LoadStatus.FAILED)
+            }
+        }
+    }
 
     private fun initializedPagedListBuilder(config: PagedList.Config):
             LivePagedListBuilder<Int, ArticleMinimal> {
 
-        val dataSourceFactory =newsRepo.headlinesDataSource("us").map {
+        val dataSourceFactory =newsRepo.headlinesDataSource(countryName).map {
             it.toMinimal()
         }
-        return LivePagedListBuilder(dataSourceFactory, config)
+        return LivePagedListBuilder(dataSourceFactory, config).setBoundaryCallback( object : PagedList.BoundaryCallback<ArticleMinimal>(){
+            override fun onItemAtEndLoaded(itemAtEnd: ArticleMinimal) {
+                super.onItemAtEndLoaded(itemAtEnd)
+                newsRepo.loadNextPage(countryName, pageSize)
+            }
+
+            override fun onZeroItemsLoaded() {
+                super.onZeroItemsLoaded()
+                newsRepo.loadNextPage(countryName, pageSize)
+            }
+        })
     }
 
 
     init {
 
         val config = PagedList.Config.Builder()
-            .setPageSize(10)
+            .setPageSize(pageSize)
             .setEnablePlaceholders(false)
             .build()
         newsPagedLive = initializedPagedListBuilder(config).build()
     }
-    
+
     private fun Article.toMinimal(): ArticleMinimal {
         val tm = DateTime.parse(publishedAt).local
         return ArticleMinimal(title, source.name, tm.relativeTime(), urlToImage)
@@ -70,4 +95,11 @@ class NewsHeadlinesViewModel(
         return "${(diff.weeks / 5).roundToInt()} months ago"
     }
 
+}
+
+enum class LoadStatus{
+    REFRESHING,
+    FAILED,
+    COMPLETED,
+    IDLE
 }

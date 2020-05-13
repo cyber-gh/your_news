@@ -14,6 +14,9 @@ import kotlinx.coroutines.launch
 
 interface INewsRepository {
     fun headlinesDataSource(country: String) : DataSource.Factory<Int, Article>
+
+    fun loadNextPage(country: String, pageSize: Int)
+    suspend fun resetArticles(forCountry: String) : Boolean
 }
 
 class NewsRepository(
@@ -33,18 +36,34 @@ class NewsRepository(
     }
 
     override fun headlinesDataSource(country: String): DataSource.Factory<Int, Article> {
-        if (networkManager.isConnected) {
-            return object : DataSource.Factory<Int, Article>(){
-                override fun create(): DataSource<Int, Article> {
-                    return NewsHeadlinesDataSource(country, api, onNewDataLoaded = {
-                        cache(country, it)
-                    })
-                }
-            }
-        } else {
-            return db.articlesDao().articlesDataSource(country).map {
+        return db.articlesDao().articlesDataSource(country).map {
                 it.toArticle()
+        }
+
+    }
+
+    override fun loadNextPage(country: String, pageSize: Int) {
+        scope.launch {
+            val nr = db.articlesDao().articlesNr(country)
+            val fullPages = nr / pageSize
+            val isLastPageFull = nr % pageSize == 0
+            val nxtPage = if (isLastPageFull) fullPages + 1 else fullPages
+
+            kotlin.runCatching {
+                api.getHeadlinesPaged(country, nxtPage, pageSize)
+            }.onSuccess {
+                cache(country, it)
             }
+
+        }
+    }
+
+    override suspend fun resetArticles(forCountry: String) : Boolean {
+        return if (networkManager.isConnected) {
+            db.articlesDao().deleteByCountry(forCountry)
+            true
+        } else {
+            false
         }
     }
 
