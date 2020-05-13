@@ -8,6 +8,7 @@ import dev.skyit.yournews.api.client.NewsAPIClient
 import dev.skyit.yournews.repository.INewsRepository
 import dev.skyit.yournews.repository.NewsRepository
 import dev.skyit.yournews.ui.main.newsheadlines.NewsHeadlinesViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -29,6 +30,7 @@ val apiModule = module {
     }
 }
 
+@InternalCoroutinesApi
 val repositoryModule = module {
     single<INewsRepository> {
         NewsRepository(get(), get(), get())

@@ -52,6 +52,13 @@ class NewsHeadlinesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vModel.internetReconnected.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(binding.root, "Reconnected to internet", Snackbar.LENGTH_LONG)
+                .setAction("Refresh") {
+                    vModel.refreshList()
+                }.show()
+        })
+
         binding.swipeRefresh.setOnRefreshListener {
             vModel.refreshList()
         }

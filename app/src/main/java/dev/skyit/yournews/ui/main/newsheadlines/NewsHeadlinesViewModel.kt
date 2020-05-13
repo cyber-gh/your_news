@@ -1,6 +1,7 @@
 package dev.skyit.yournews.ui.main.newsheadlines
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
@@ -11,6 +12,7 @@ import dev.skyit.yournews.repository.INewsRepository
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.present
 import dev.skyit.yournews.ui.utils.SingleLiveEvent
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -18,9 +20,19 @@ class NewsHeadlinesViewModel(
     private val newsRepo: INewsRepository
 ) : ViewModel() {
 
+    init {
+        viewModelScope.launch {
+            newsRepo.reconnectedToInternet.collect {
+                internetReconnected.postValue(Unit)
+            }
+        }
+    }
+
     val newsPagedLive : LiveData<PagedList<ArticleMinimal>>
 
     val refreshStatusLive = SingleLiveEvent<LoadStatus>().apply { value = LoadStatus.IDLE }
+
+    val internetReconnected = MutableLiveData<Unit>()
 
     private val countryName: String = "us"
     private val pageSize: Int = 5
