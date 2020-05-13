@@ -12,7 +12,7 @@ import androidx.room.TypeConverters
     version = 1,
     exportSchema = false
 )
-abstract class AppDatabase : RoomDatabase() {
+abstract class ArticlesDatabase : RoomDatabase() {
 
 
     abstract fun articlesDao(): RoomArticlesDao
@@ -21,7 +21,7 @@ abstract class AppDatabase : RoomDatabase() {
         private const val dbName = "news.db"
 
         @Volatile
-        private var instance: AppDatabase? = null
+        private var instance: ArticlesDatabase? = null
         private val LOCK = Any()
 
         operator fun invoke(context: Context) = instance
@@ -34,7 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) = Room.databaseBuilder(
             context,
-            AppDatabase::class.java,
+            ArticlesDatabase::class.java,
             dbName
         ).addCallback(object : RoomDatabase.Callback() {
 

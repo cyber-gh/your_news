@@ -25,15 +25,12 @@ class NewsHeadlinesViewModel(
     private fun initializedPagedListBuilder(config: PagedList.Config):
             LivePagedListBuilder<Int, ArticleMinimal> {
 
-        val dataSourceFactory = object : DataSource.Factory<Int, Article>() {
-            override fun create(): DataSource<Int, Article> {
-                return newsRepo.headlinesDataSource("us")
-            }
-        }.map {
+        val dataSourceFactory =newsRepo.headlinesDataSource("us").map {
             it.toMinimal()
         }
         return LivePagedListBuilder(dataSourceFactory, config)
     }
+
 
     init {
 

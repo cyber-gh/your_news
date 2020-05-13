@@ -1,6 +1,8 @@
 package dev.skyit.yournews.dependencies
 
-import dev.skyit.yournews.api.caching.AppDatabase
+import dev.skyit.yournews.api.INetworkManger
+import dev.skyit.yournews.api.NetworkManager
+import dev.skyit.yournews.api.caching.ArticlesDatabase
 import dev.skyit.yournews.api.client.INewsAPIClient
 import dev.skyit.yournews.api.client.NewsAPIClient
 import dev.skyit.yournews.repository.INewsRepository
@@ -21,16 +23,20 @@ val apiModule = module {
     single<INewsAPIClient>{
         NewsAPIClient()
     }
+
+    single<INetworkManger>{
+        NetworkManager(androidContext())
+    }
 }
 
 val repositoryModule = module {
     single<INewsRepository> {
-        NewsRepository(get(), get())
+        NewsRepository(get(), get(), get())
     }
 }
 
 val databaseModule = module {
     single {
-        AppDatabase(androidContext())
+        ArticlesDatabase(androidContext())
     }
 }
