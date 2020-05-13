@@ -8,7 +8,8 @@ import kotlinx.coroutines.*
 
 class NewsHeadlinesDataSource(
     private val country: String,
-    private val newsHeadlines: INewsAPIClient
+    private val newsHeadlines: INewsAPIClient,
+    private val onNewDataLoaded: ((List<Article>) -> Unit)? = null
 ) : PageKeyedDataSource<Int, Article>() {
     private val scope = CoroutineScope(Dispatchers.IO)
     override fun loadInitial(
@@ -19,6 +20,7 @@ class NewsHeadlinesDataSource(
             kotlin.runCatching {
                 newsHeadlines.getHeadlinesPaged(country, 1, params.requestedLoadSize)
             }.onSuccess {
+                onNewDataLoaded?.invoke(it)
                 callback.onResult(it,null, 2)
             }.onFailure {
                 callback.onResult(emptyList(), null, null)
@@ -32,6 +34,7 @@ class NewsHeadlinesDataSource(
             kotlin.runCatching {
                 newsHeadlines.getHeadlinesPaged(country, params.key, params.requestedLoadSize)
             }.onSuccess {
+                onNewDataLoaded?.invoke(it)
                 callback.onResult(it, params.key + 1)
             }.onFailure {
                 callback.onResult(emptyList(), null)
@@ -45,6 +48,7 @@ class NewsHeadlinesDataSource(
             kotlin.runCatching {
                 newsHeadlines.getHeadlinesPaged(country, params.key, params.requestedLoadSize)
             }.onSuccess {
+                onNewDataLoaded?.invoke(it)
                 callback.onResult(it, if (params.key - 1 >= 1) params.key - 1 else null)
             }.onFailure {
                 callback.onResult(emptyList(), null)

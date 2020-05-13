@@ -2,6 +2,7 @@ package dev.skyit.yournews
 
 import android.app.Application
 import dev.skyit.yournews.dependencies.apiModule
+import dev.skyit.yournews.dependencies.databaseModule
 import dev.skyit.yournews.dependencies.repositoryModule
 import dev.skyit.yournews.dependencies.viewModelsModule
 import org.koin.android.ext.koin.androidContext
@@ -24,7 +25,8 @@ class BaseApp : Application() {
             modules(listOf(
                 apiModule,
                 repositoryModule,
-                viewModelsModule
+                viewModelsModule,
+                databaseModule
             ))
         }
     }

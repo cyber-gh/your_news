@@ -1,6 +1,9 @@
 package dev.skyit.yournews.api.models.headlines
 
 
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import dev.skyit.yournews.api.models.Source
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
