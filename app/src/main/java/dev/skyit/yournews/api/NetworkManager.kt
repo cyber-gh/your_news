@@ -3,17 +3,11 @@ package dev.skyit.yournews.api
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
-import android.net.NetworkInfo
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.internal.ChannelFlow
-import kotlin.coroutines.CoroutineContext
 
 interface INetworkManger {
 
@@ -48,7 +42,7 @@ class NetworkManager (
                 isConnected = false
             }
         })
-        awaitClose() //crashes with channel closed if missing
+        awaitClose()
     }
 
 

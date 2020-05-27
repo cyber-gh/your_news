@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
+import coil.transform.CircleCropTransformation
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import dev.skyit.yournews.BaseFragment
+import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
 import dev.skyit.yournews.databinding.NewsHeadlinesFragmentBinding
 import dev.skyit.yournews.ui.ArticleMinimal
@@ -94,7 +97,9 @@ class NewsHeadlinesAdapter
             binding.data = data
             binding.executePendingBindings()
             data.imageLink?.let {
-                Picasso.get().load(it).into(binding.imageView)
+                binding.imageView.load(it) {
+                    crossfade(true)
+                }
             }
         }
     }
