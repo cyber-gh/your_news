@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigation_headlines"
+        android:title="@string/headlines"
+        android:icon="@drawable/ic_baseline_view_headline_24"
+        />
+
+    <item
+        android:id="@+id/navigation_sources"
+        android:title="@string/sources"
+        android:icon="@drawable/ic_baseline_star_border_24"/>
+
+    <item
+        android:id="@+id/navigation_bookmarks"
+        android:title="@string/bookmarks"
+        android:icon="@drawable/ic_baseline_bookmarks_24"/>
+</menu>

@@ -14,4 +14,7 @@
     <string name="refresh">Refresh</string>
     <string name="data_reloaded">Data reloaded</string>
     <string name="error_loading_data">Unable to load data, check your internet connection</string>
+    <string name="headlines">Headlines</string>
+    <string name="sources">Sources</string>
+    <string name="bookmarks">Bookmars</string>
 </resources>

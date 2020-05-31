@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
 import dev.skyit.yournews.databinding.NewsHeadlinesFragmentBinding
 import dev.skyit.yournews.ui.ArticleMinimal
+import dev.skyit.yournews.ui.main.search.SearchNewsFragment
 import dev.skyit.yournews.ui.utils.buildDiffUtill
 import dev.skyit.yournews.ui.utils.errAlert
 import dev.skyit.yournews.ui.utils.setItemSpacing
