@@ -1,6 +1,5 @@
 package dev.skyit.yournews.ui.main.search
 
-import android.R
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +13,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.transition.TransitionInflater
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import coil.transition.CrossfadeTransition
@@ -22,6 +22,7 @@ import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.databinding.SearchItemListViewBinding
 import dev.skyit.yournews.databinding.SearchNewsFragmentBinding
 import dev.skyit.yournews.ui.utils.RecyclerAdapter
+import dev.skyit.yournews.ui.utils.hideKeyboard
 import dev.skyit.yournews.utils.toArrayList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -32,6 +33,12 @@ class SearchNewsFragment : BaseFragment() {
 
     private val vModel: SearchNewsViewModel by viewModel()
     private lateinit var adapter: RecyclerAdapter<ArticleDTO, SearchItemListViewBinding>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.slide_bottom)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +54,7 @@ class SearchNewsFragment : BaseFragment() {
 
         binding.backBtn.setOnClickListener {
             findNavController().popBackStack()
+            activity?.hideKeyboard()
         }
 
         binding.searchEditText.requestFocus()
