@@ -67,9 +67,9 @@ class SearchNewsFragment : BaseFragment() {
 
         }
 
-        adapter = RecyclerAdapter({inflater ->
+        adapter = RecyclerAdapter(binderCreator =  {inflater ->
             SearchItemListViewBinding.inflate(inflater)
-        }, { data ->
+        },injectData =  { data ->
             val img = data.urlToImage
             if (img != null) {
                 itemImg.load(img) {
@@ -79,6 +79,8 @@ class SearchNewsFragment : BaseFragment() {
                 }
             }
             itemTitle.text = data.title
+        }, idKey = {
+            url
         })
 
         binding.recyclerView2.adapter = adapter
