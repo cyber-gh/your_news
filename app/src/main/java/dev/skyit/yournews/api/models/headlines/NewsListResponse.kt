@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NewsListResponse(
     @SerialName("articles")
-    val articles: List<Article>,
+    val articles: List<ArticleDTO>,
     @SerialName("status")
     val status: String,
     @SerialName("totalResults")

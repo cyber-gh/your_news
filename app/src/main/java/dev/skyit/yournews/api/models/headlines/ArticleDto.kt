@@ -9,7 +9,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Article(
+data class ArticleDTO(
     @SerialName("author")
     val author: String?,
     @SerialName("content")

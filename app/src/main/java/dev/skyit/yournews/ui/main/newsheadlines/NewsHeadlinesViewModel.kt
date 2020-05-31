@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.soywiz.klock.*
-import dev.skyit.yournews.api.models.headlines.Article
-import dev.skyit.yournews.repository.INewsRepository
+import dev.skyit.yournews.api.models.headlines.ArticleDTO
+import dev.skyit.yournews.repository.INewsHeadlinesRepository
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.present
 import dev.skyit.yournews.ui.utils.SingleLiveEvent
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class NewsHeadlinesViewModel(
-    private val newsRepo: INewsRepository
+    private val newsRepo: INewsHeadlinesRepository
 ) : ViewModel() {
 
     init {
@@ -78,7 +78,7 @@ class NewsHeadlinesViewModel(
         newsPagedLive = initializedPagedListBuilder(config).build()
     }
 
-    private fun Article.toMinimal(): ArticleMinimal {
+    private fun ArticleDTO.toMinimal(): ArticleMinimal {
         val tm = DateTime.parse(publishedAt).local
         return ArticleMinimal(title, source.name, tm.relativeTime(), urlToImage)
     }

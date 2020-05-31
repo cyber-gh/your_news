@@ -1,20 +1,19 @@
 package dev.skyit.yournews.repository.datasource
 
-import androidx.paging.ItemKeyedDataSource
 import androidx.paging.PageKeyedDataSource
 import dev.skyit.yournews.api.client.INewsAPIClient
-import dev.skyit.yournews.api.models.headlines.Article
+import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import kotlinx.coroutines.*
 
 class NewsHeadlinesDataSource(
     private val country: String,
     private val newsHeadlines: INewsAPIClient,
-    private val onNewDataLoaded: ((List<Article>) -> Unit)? = null
-) : PageKeyedDataSource<Int, Article>() {
+    private val onNewDataLoaded: ((List<ArticleDTO>) -> Unit)? = null
+) : PageKeyedDataSource<Int, ArticleDTO>() {
     private val scope = CoroutineScope(Dispatchers.IO)
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, Article>
+        callback: LoadInitialCallback<Int, ArticleDTO>
     ) {
         scope.launch {
             kotlin.runCatching {
@@ -29,7 +28,7 @@ class NewsHeadlinesDataSource(
 
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Article>) {
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, ArticleDTO>) {
         scope.launch {
             kotlin.runCatching {
                 newsHeadlines.getHeadlinesPaged(country, params.key, params.requestedLoadSize)
@@ -43,7 +42,7 @@ class NewsHeadlinesDataSource(
 
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Article>) {
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, ArticleDTO>) {
         scope.launch {
             kotlin.runCatching {
                 newsHeadlines.getHeadlinesPaged(country, params.key, params.requestedLoadSize)

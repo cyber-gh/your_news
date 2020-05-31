@@ -8,11 +8,7 @@
         android:id="@+id/navigation_headlines"
         android:name="dev.skyit.yournews.ui.main.newsheadlines.NewsHeadlinesFragment"
         android:label="NewsHeadlinesFragment"
-        tools:layout="@layout/news_headlines_fragment">
-        <action
-            android:id="@+id/action_navigation_headlines_to_searchNewsFragment"
-            app:destination="@id/searchNewsFragment" />
-    </fragment>
+        tools:layout="@layout/news_headlines_fragment"/>
     <fragment
         android:id="@+id/navigation_bookmarks"
         android:name="dev.skyit.yournews.ui.main.bookmarks.NewsBookmarksFragment"
@@ -23,9 +19,4 @@
         android:name="dev.skyit.yournews.ui.main.sources.NewsSourcesFragment"
         android:label="NewsSourcesFragment"
         tools:layout="@layout/news_sources_fragment"/>
-    <fragment
-        android:id="@+id/searchNewsFragment"
-        android:name="dev.skyit.yournews.ui.main.search.SearchNewsFragment"
-        android:label="SearchNewsFragment"
-        tools:layout="@layout/search_news_fragment"/>
 </navigation>

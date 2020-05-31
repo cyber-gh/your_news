@@ -1,9 +1,8 @@
 package dev.skyit.yournews.api.client
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import dev.skyit.yournews.api.models.headlines.Article
+import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.api.models.headlines.NewsListResponse
-import dev.skyit.yournews.repository.datasource.INewsHeadlines
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -11,7 +10,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.http.GET
-import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 
@@ -25,8 +23,10 @@ interface INewsAPIClient {
     }
 
 
-    suspend fun getHeadlines(country: String) : List<Article>
-    suspend fun getHeadlinesPaged(country: String = "us", pageNumber: Int, pageSize: Int) : List<Article>
+    suspend fun getHeadlines(country: String) : List<ArticleDTO>
+    suspend fun getHeadlinesPaged(country: String = "us", pageNumber: Int, pageSize: Int) : List<ArticleDTO>
+
+    suspend fun searchArticles(keyword: String) : List<ArticleDTO>
 }
 
 class NewsAPIClient: INewsAPIClient{
@@ -62,18 +62,25 @@ class NewsAPIClient: INewsAPIClient{
             .build().create(INewsAPIClient.NewsAPIService::class.java)
     }
 
-    override suspend fun getHeadlines(country: String): List<Article> {
+    override suspend fun getHeadlines(country: String): List<ArticleDTO> {
         val options = hashMapOf("country" to country)
         return newsAPIService.getHeadlines(options).articles
     }
 
-    override suspend fun getHeadlinesPaged(country: String, pageNumber: Int, pageSize: Int): List<Article> {
+    override suspend fun getHeadlinesPaged(country: String, pageNumber: Int, pageSize: Int): List<ArticleDTO> {
         val options = hashMapOf(
             "country" to country,
             "page" to pageNumber.toString(),
             "pageSize" to pageSize.toString())
         return newsAPIService.getHeadlines(options).articles
 
+    }
+
+    override suspend fun searchArticles(keyword: String): List<ArticleDTO> {
+        val options = hashMapOf(
+            "q" to keyword
+        )
+        return newsAPIService.searchArticles(options).articles
     }
 
 

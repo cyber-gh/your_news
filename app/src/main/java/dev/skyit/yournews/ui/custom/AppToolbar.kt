@@ -30,7 +30,7 @@ class AppToolbar: Toolbar {
         inflateView()
     }
 
-    fun setOnSearchClicked(listener: OnClickListener){
-        imageButton3.setOnClickListener(listener)
+    fun onSearch(callback: () -> Unit) {
+        this.imageButton3.setOnClickListener { callback() }
     }
 }

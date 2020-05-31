@@ -4,8 +4,6 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import dev.skyit.yournews.api.models.Source
-import dev.skyit.yournews.api.models.headlines.Article
-import kotlinx.serialization.SerialName
 
 @Entity(tableName = "articles", indices = [Index(value = ["url"], unique = true)])
 data class ArticleEntity(
