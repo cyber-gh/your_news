@@ -10,4 +10,8 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="from">From:</string>
+    <string name="recnnect_to_internet">Reconnected to internet</string>
+    <string name="refresh">Refresh</string>
+    <string name="data_reloaded">Data reloaded</string>
+    <string name="error_loading_data">Unable to load data, check your internet connection</string>
 </resources>

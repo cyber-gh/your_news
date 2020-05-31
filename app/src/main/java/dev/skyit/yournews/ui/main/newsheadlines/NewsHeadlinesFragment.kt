@@ -5,28 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import coil.transform.CircleCropTransformation
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
 import dev.skyit.yournews.databinding.NewsHeadlinesFragmentBinding
 import dev.skyit.yournews.ui.ArticleMinimal
-import dev.skyit.yournews.ui.utils.RecyclerAdapter
-import dev.skyit.yournews.ui.utils.buildDiffUttil
+import dev.skyit.yournews.ui.utils.buildDiffUtill
+import dev.skyit.yournews.ui.utils.errAlert
 import dev.skyit.yournews.ui.utils.setItemSpacing
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import dev.skyit.yournews.ui.utils.snack
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsHeadlinesFragment : BaseFragment() {
@@ -44,20 +37,12 @@ class NewsHeadlinesFragment : BaseFragment() {
         return binding.root
     }
 
-    private fun snack(msg: String) {
-        Snackbar.make(binding.root, msg, Snackbar.LENGTH_SHORT).show()
-    }
-    //TODO move these
-    private fun errAlert(msg: String) {
-        AlertDialog.Builder(requireContext()).setTitle("Error").setMessage(msg).show()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         vModel.internetReconnected.observe(viewLifecycleOwner, Observer {
-            Snackbar.make(binding.root, "Reconnected to internet", Snackbar.LENGTH_LONG)
-                .setAction("Refresh") {
+            Snackbar.make(binding.root, getString(R.string.recnnect_to_internet), Snackbar.LENGTH_LONG)
+                .setAction(getString(R.string.refresh)) {
                     vModel.refreshList()
                 }.show()
         })
@@ -68,8 +53,8 @@ class NewsHeadlinesFragment : BaseFragment() {
 
         vModel.refreshStatusLive.observe(viewLifecycleOwner, Observer {
             when (it) {
-                LoadStatus.COMPLETED -> snack("Data reloaded")
-                LoadStatus.FAILED -> errAlert("Unable to load data, check your internet connection")
+                LoadStatus.COMPLETED -> snack(getString(R.string.data_reloaded))
+                LoadStatus.FAILED -> errAlert(getString(R.string.error_loading_data))
             }
 
             binding.swipeRefresh.isRefreshing = it == LoadStatus.REFRESHING
@@ -89,7 +74,7 @@ class NewsHeadlinesFragment : BaseFragment() {
 
 class NewsHeadlinesAdapter
     : PagedListAdapter<ArticleMinimal,
-        NewsHeadlinesAdapter.NewsHeadlinesViewHolder>(buildDiffUttil { this.title }) {
+        NewsHeadlinesAdapter.NewsHeadlinesViewHolder>(buildDiffUtill { this.title }) {
 
     class NewsHeadlinesViewHolder(private val binding: NewsArticleListItemBinding):
             RecyclerView.ViewHolder(binding.root) {
