@@ -10,4 +10,6 @@
     <color name="secondaryTextColor">#ffffff</color>
 
     <color name="anti_color">@color/grey_300</color>
+
+    <color name="outline_color">@color/grey_500</color>
 </resources>

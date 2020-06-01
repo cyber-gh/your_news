@@ -25,7 +25,7 @@ class RecyclerAdapter<T, VB : ViewDataBinding>(
         }
     }
 
-    inner class Diff(private val oldList: List<T>, private val newList: List<T>) : DiffUtil.Callback() {
+    private inner class Diff(private val oldList: List<T>, private val newList: List<T>) : DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             val key = idKey ?: return false
             return oldList[oldItemPosition].key() == newList[newItemPosition].key()
@@ -67,7 +67,7 @@ class RecyclerAdapter<T, VB : ViewDataBinding>(
         }
     }
 
-    fun updateData(newData: ArrayList<T>, diff: Diff) {
+    private fun updateData(newData: ArrayList<T>, diff: Diff) {
         val diffResult = DiffUtil.calculateDiff(diff)
         itemsList.clear()
         itemsList.addAll(newData)

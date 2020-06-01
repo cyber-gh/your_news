@@ -2,12 +2,14 @@
 <resources>
     <color name="primaryColor">#29b6f6</color>
     <color name="primaryLightColor">#73e8ff</color>
-    <color name="primaryDarkColor">#0086c3</color>
+    <color name="primaryDarkColor">#ffffff</color>
     <color name="secondaryColor">#00695c</color>
     <color name="secondaryLightColor">#439889</color>
     <color name="secondaryDarkColor">#003d33</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
 
-    <color name="anti_color">@color/grey_900</color>
+    <color name="anti_color">@color/grey_700</color>
+
+    <color name="outline_color">@color/grey_100</color>
 </resources>
