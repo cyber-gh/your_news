@@ -7,7 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import dev.skyit.yournews.R
 import kotlinx.android.synthetic.main.app_bar_view.view.*
 
-class AppToolbar: Toolbar {
+class AppMainToolbar: Toolbar {
 
     private fun inflateView() {
         View.inflate(context, R.layout.app_bar_view, this)

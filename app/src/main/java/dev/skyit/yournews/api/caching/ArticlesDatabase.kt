@@ -9,7 +9,7 @@ import androidx.room.TypeConverters
 @TypeConverters(SpecialTypeConverters::class)
 @Database(
     entities = [ArticleEntity::class],
-    version = 1,
+    version = 3,
     exportSchema = false
 )
 abstract class ArticlesDatabase : RoomDatabase() {
@@ -36,7 +36,9 @@ abstract class ArticlesDatabase : RoomDatabase() {
             context,
             ArticlesDatabase::class.java,
             dbName
-        ).addCallback(object : RoomDatabase.Callback() {
+        )
+            .fallbackToDestructiveMigration()
+            .addCallback(object : RoomDatabase.Callback() {
 
         })
             .build()

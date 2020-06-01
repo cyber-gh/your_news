@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/appToolbar"
         app:navGraph="@navigation/main_tabs_graph" />
 
-    <dev.skyit.yournews.ui.custom.AppToolbar
+    <dev.skyit.yournews.ui.custom.AppMainToolbar
         android:id="@+id/appToolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

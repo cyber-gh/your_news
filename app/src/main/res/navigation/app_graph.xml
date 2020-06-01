@@ -13,9 +13,38 @@
         <action
             android:id="@+id/action_mainFragment_to_searchNewsFragment"
             app:destination="@id/searchNewsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_webFragment"
+            app:destination="@id/webFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchNewsFragment"
         android:name="dev.skyit.yournews.ui.main.search.SearchNewsFragment"
-        android:label="SearchNewsFragment" />
+        android:label="SearchNewsFragment"
+        tools:layout="@layout/search_news_fragment">
+        <action
+            android:id="@+id/action_searchNewsFragment_to_articleDetailsFragment"
+            app:destination="@id/articleDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleDetailsFragment"
+        android:name="dev.skyit.yournews.ui.main.details.ArticleDetailsFragment"
+        android:label="ArticleDetailsFragment"
+        tools:layout="@layout/article_details_fragment">
+        <argument
+            android:name="article"
+            app:argType="dev.skyit.yournews.api.caching.ArticleEntity" />
+        <action
+            android:id="@+id/action_articleDetailsFragment_to_webFragment"
+            app:destination="@id/webFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webFragment"
+        android:name="dev.skyit.yournews.ui.main.web.WebFragment"
+        android:label="WebFragment"
+        tools:layout="@layout/web_fragment">
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
 </navigation>

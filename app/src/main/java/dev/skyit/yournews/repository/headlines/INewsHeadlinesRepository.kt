@@ -2,6 +2,7 @@ package dev.skyit.yournews.repository.headlines
 
 import androidx.paging.DataSource
 import dev.skyit.yournews.api.INetworkManger
+import dev.skyit.yournews.api.caching.ArticleEntity
 import dev.skyit.yournews.api.caching.ArticlesDatabase
 import dev.skyit.yournews.api.client.INewsAPIClient
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
@@ -12,9 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 interface INewsHeadlinesRepository {
-    fun headlinesDataSource(country: String) : DataSource.Factory<Int, ArticleDTO>
+    fun headlinesDataSource(country: String) : DataSource.Factory<Int, ArticleEntity>
 
     fun loadNextPage(country: String, pageSize: Int)
     suspend fun resetArticles(forCountry: String) : Boolean
@@ -41,10 +43,8 @@ class NewsRepository(
         }
     }
 
-    override fun headlinesDataSource(country: String): DataSource.Factory<Int, ArticleDTO> {
-        return db.articlesDao().articlesDataSource(country).map {
-                it.toArticle()
-        }
+    override fun headlinesDataSource(country: String): DataSource.Factory<Int, ArticleEntity> {
+        return db.articlesDao().articlesDataSource(country)
 
     }
 
@@ -59,6 +59,8 @@ class NewsRepository(
                 api.getHeadlinesPaged(country, nxtPage, pageSize)
             }.onSuccess {
                 cache(country, it)
+            }.onFailure {
+                Timber.e(it, "something went wrong")
             }
 
         }

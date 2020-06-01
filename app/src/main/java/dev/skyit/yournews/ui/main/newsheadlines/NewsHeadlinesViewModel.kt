@@ -7,12 +7,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.soywiz.klock.*
+import dev.skyit.yournews.api.caching.ArticleEntity
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.repository.headlines.INewsHeadlinesRepository
 import dev.skyit.yournews.repository.utils.IInternetReturned
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.present
 import dev.skyit.yournews.ui.utils.SingleLiveEvent
+import dev.skyit.yournews.ui.utils.relativeTime
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -82,34 +84,12 @@ class NewsHeadlinesViewModel(
         newsPagedLive = initializedPagedListBuilder(config).build()
     }
 
-    private fun ArticleDTO.toMinimal(): ArticleMinimal {
-        val tm = DateTime.parse(publishedAt).local
-        return ArticleMinimal(title, source.name, tm.relativeTime(), urlToImage)
+    private fun ArticleEntity.toMinimal(): ArticleMinimal {
+        val tm = DateTime.fromUnix(publishedAt)
+        return ArticleMinimal(id, title, source.name, tm.relativeTime(), urlToImage, url)
     }
 
-    private fun DateTime.relativeTime() : String {
-        val diff = present - this
-        if (diff < 1.hours) {
-            return "${diff.minutes.roundToInt()} minutes ago"
-        }
-        if (diff < 1.days) {
-            return "${diff.hours.roundToInt()} hours ago"
-        }
 
-        if (diff < 2.days) {
-            return "Yesterday"
-        }
-
-        if (diff < 1.weeks) {
-            return "${diff.days.roundToInt()} days ago"
-        }
-
-        if (diff < 5.weeks) {
-            return "${diff.weeks.roundToInt()} weeks ago"
-        }
-
-        return "${(diff.weeks / 5).roundToInt()} months ago"
-    }
 
 }
 

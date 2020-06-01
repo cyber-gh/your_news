@@ -18,11 +18,9 @@ import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
 import dev.skyit.yournews.databinding.NewsHeadlinesFragmentBinding
 import dev.skyit.yournews.ui.ArticleMinimal
+import dev.skyit.yournews.ui.main.MainFragmentDirections
 import dev.skyit.yournews.ui.main.search.SearchNewsFragment
-import dev.skyit.yournews.ui.utils.buildDiffUtill
-import dev.skyit.yournews.ui.utils.errAlert
-import dev.skyit.yournews.ui.utils.setItemSpacing
-import dev.skyit.yournews.ui.utils.snack
+import dev.skyit.yournews.ui.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsHeadlinesFragment : BaseFragment() {
@@ -63,7 +61,9 @@ class NewsHeadlinesFragment : BaseFragment() {
             binding.swipeRefresh.isRefreshing = it == LoadStatus.REFRESHING
         })
 
-        adapter = NewsHeadlinesAdapter()
+        adapter = NewsHeadlinesAdapter {
+            mainNavController.navigate(MainFragmentDirections.actionMainFragmentToWebFragment(it.url))
+        }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
         binding.recyclerView.setItemSpacing()
@@ -75,15 +75,19 @@ class NewsHeadlinesFragment : BaseFragment() {
 
 }
 
-class NewsHeadlinesAdapter
-    : PagedListAdapter<ArticleMinimal,
-        NewsHeadlinesAdapter.NewsHeadlinesViewHolder>(buildDiffUtill { this.title }) {
+class NewsHeadlinesAdapter(
+    private val onItemClick: (ArticleMinimal) -> Unit
+)
+    : PagedListAdapter<ArticleMinimal, NewsHeadlinesAdapter.NewsHeadlinesViewHolder>(buildDiffUtill { this.title }) {
 
-    class NewsHeadlinesViewHolder(private val binding: NewsArticleListItemBinding):
+    inner class NewsHeadlinesViewHolder(private val binding: NewsArticleListItemBinding):
             RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ArticleMinimal) {
             binding.data = data
             binding.executePendingBindings()
+            binding.root.setOnClickListener {
+                onItemClick(data)
+            }
             data.imageLink?.let {
                 binding.imageView.load(it) {
                     crossfade(true)

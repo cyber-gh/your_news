@@ -4,7 +4,7 @@ import com.soywiz.klock.DateTime
 import dev.skyit.yournews.api.caching.ArticleEntity
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 
-fun ArticleDTO.toEntity(country: String) : ArticleEntity {
+fun ArticleDTO.toEntity(country: String? = null) : ArticleEntity {
     return ArticleEntity(
         country = country,
         author = author,

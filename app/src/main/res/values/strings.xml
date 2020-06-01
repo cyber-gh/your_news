@@ -18,4 +18,5 @@
     <string name="sources">Sources</string>
     <string name="bookmarks">Bookmars</string>
     <string name="search_for_news">Search for news</string>
+    <string name="go_to_page">Go to page</string>
 </resources>

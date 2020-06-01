@@ -21,8 +21,10 @@ import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.databinding.SearchItemListViewBinding
 import dev.skyit.yournews.databinding.SearchNewsFragmentBinding
+import dev.skyit.yournews.repository.converters.toEntity
 import dev.skyit.yournews.ui.utils.RecyclerAdapter
 import dev.skyit.yournews.ui.utils.hideKeyboard
+import dev.skyit.yournews.ui.utils.mainNavController
 import dev.skyit.yournews.utils.toArrayList
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -81,6 +83,8 @@ class SearchNewsFragment : BaseFragment() {
             itemTitle.text = data.title
         }, idKey = {
             url
+        }, onItemClick = {
+            mainNavController.navigate(SearchNewsFragmentDirections.actionSearchNewsFragmentToArticleDetailsFragment(it.toEntity()))
         })
 
         binding.recyclerView2.adapter = adapter
