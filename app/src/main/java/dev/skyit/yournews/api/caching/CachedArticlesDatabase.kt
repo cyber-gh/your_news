@@ -9,7 +9,7 @@ import androidx.room.TypeConverters
 @TypeConverters(SpecialTypeConverters::class)
 @Database(
     entities = [ArticleEntity::class],
-    version = 3,
+    version = 5,
     exportSchema = false
 )
 abstract class CachedArticlesDatabase : RoomDatabase(), IAppDatabase {

@@ -16,8 +16,8 @@ data class ArticleEntity(
     val category: String?,
 
     val author: String?,
-    val content: String,
-    val description: String,
+    val content: String?,
+    val description: String?,
     val publishedAt: Long, //kind of a bad idea, no timezone support
     val source: Source,
     val title: String,

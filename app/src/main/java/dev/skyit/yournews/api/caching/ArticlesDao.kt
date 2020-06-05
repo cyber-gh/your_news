@@ -21,4 +21,7 @@ interface RoomArticlesDao {
 
     @Query("delete from articles where country = :country")
     suspend fun deleteByCountry(country: String)
+
+    @Query("select * from articles where url = :url")
+    suspend fun findArticle(url: String) : ArticleEntity?
 }

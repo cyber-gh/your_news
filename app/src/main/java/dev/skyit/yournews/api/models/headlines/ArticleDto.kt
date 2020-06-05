@@ -13,9 +13,9 @@ data class ArticleDTO(
     @SerialName("author")
     val author: String?,
     @SerialName("content")
-    val content: String,
+    val content: String?,
     @SerialName("description")
-    val description: String,
+    val description: String?,
     @SerialName("publishedAt")
     val publishedAt: String,
     @SerialName("source")
