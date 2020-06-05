@@ -92,17 +92,11 @@ class NewsHeadlinesAdapter(
                 onItemClick(data)
             }
             if (data.imageLink != null) {
-                binding.imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
                 binding.imageView.load(data.imageLink) {
                     crossfade(true)
                     placeholder(R.drawable.news_article_placeholder)
-                    this.listener(onSuccess = {data, source ->
-                        binding.imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                    })
-                }
 
-            } else {
-                binding.imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                }
             }
         }
     }

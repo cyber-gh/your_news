@@ -41,7 +41,7 @@ class NewsHeadlinesViewModel(
     val internetReconnected = MutableLiveData<Unit>()
 
     private val countryName: String = "us"
-    private val pageSize: Int = 5
+    private val pageSize: Int = 10
 
     fun refreshList() {
         refreshStatusLive.value = LoadStatus.REFRESHING
@@ -58,7 +58,7 @@ class NewsHeadlinesViewModel(
     private fun initializedPagedListBuilder(config: PagedList.Config):
             LivePagedListBuilder<Int, ArticleMinimal> {
 
-        val dataSourceFactory =newsRepo.headlinesDataSource(countryName).map {
+        val dataSourceFactory = newsRepo.headlinesDataSource(countryName).map {
             it.toMinimal()
         }
         return LivePagedListBuilder(dataSourceFactory, config).setBoundaryCallback( object : PagedList.BoundaryCallback<ArticleMinimal>(){
@@ -79,7 +79,7 @@ class NewsHeadlinesViewModel(
 
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
-            .setEnablePlaceholders(false)
+            .setEnablePlaceholders(true)
             .build()
         newsPagedLive = initializedPagedListBuilder(config).build()
     }

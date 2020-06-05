@@ -60,6 +60,7 @@ class SearchNewsFragment : BaseFragment() {
         }
 
         binding.searchEditText.requestFocus()
+
         val imm: InputMethodManager? = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.showSoftInput(binding.searchEditText, InputMethodManager.SHOW_IMPLICIT)
 
