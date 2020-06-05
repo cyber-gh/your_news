@@ -39,7 +39,6 @@
             android:background="@android:color/transparent"
             android:ems="10"
             android:hint="@string/search_for_news"
-            android:inputType="textPersonName"
             app:layout_constraintBottom_toBottomOf="@+id/back_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/back_btn"

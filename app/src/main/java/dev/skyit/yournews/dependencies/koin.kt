@@ -12,7 +12,7 @@ import dev.skyit.yournews.repository.searching.ISearchNews
 import dev.skyit.yournews.repository.searching.SearchNewsRepo
 import dev.skyit.yournews.repository.utils.IInternetReturned
 import dev.skyit.yournews.repository.utils.InternetStatusRepo
-import dev.skyit.yournews.ui.main.newsheadlines.NewsHeadlinesViewModel
+import dev.skyit.yournews.ui.main.newsheadlines.list.NewsHeadlinesViewModel
 import dev.skyit.yournews.ui.main.search.SearchNewsViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
@@ -22,7 +22,10 @@ import org.koin.dsl.module
 
 val viewModelsModule = module {
     viewModel {
-        NewsHeadlinesViewModel(get(), get())
+        NewsHeadlinesViewModel(
+            get(),
+            get()
+        )
     }
 
     viewModel {

@@ -1,4 +1,4 @@
-package dev.skyit.yournews.ui.main.newsheadlines
+package dev.skyit.yournews.ui.main.newsheadlines.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,17 +8,13 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.soywiz.klock.*
 import dev.skyit.yournews.api.caching.ArticleEntity
-import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.repository.headlines.INewsHeadlinesRepository
 import dev.skyit.yournews.repository.utils.IInternetReturned
 import dev.skyit.yournews.ui.ArticleMinimal
-import dev.skyit.yournews.ui.present
 import dev.skyit.yournews.ui.utils.SingleLiveEvent
 import dev.skyit.yournews.ui.utils.relativeTime
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 
 class NewsHeadlinesViewModel(
@@ -36,7 +32,9 @@ class NewsHeadlinesViewModel(
 
     val newsPagedLive : LiveData<PagedList<ArticleMinimal>>
 
-    val refreshStatusLive = SingleLiveEvent<LoadStatus>().apply { value = LoadStatus.IDLE }
+    val refreshStatusLive = SingleLiveEvent<LoadStatus>().apply { value =
+        LoadStatus.IDLE
+    }
 
     val internetReconnected = MutableLiveData<Unit>()
 
@@ -44,7 +42,8 @@ class NewsHeadlinesViewModel(
     private val pageSize: Int = 10
 
     fun refreshList() {
-        refreshStatusLive.value = LoadStatus.REFRESHING
+        refreshStatusLive.value =
+            LoadStatus.REFRESHING
         viewModelScope.launch {
             val didRefresh = newsRepo.resetArticles(countryName)
             if (didRefresh) {

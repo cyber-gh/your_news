@@ -6,9 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.GridLayout
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -16,13 +13,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionInflater
 import coil.api.load
 import coil.transform.CircleCropTransformation
-import coil.transition.CrossfadeTransition
 import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.databinding.SearchItemListViewBinding
 import dev.skyit.yournews.databinding.SearchNewsFragmentBinding
 import dev.skyit.yournews.repository.converters.toEntity
-import dev.skyit.yournews.ui.utils.RecyclerAdapter
+import dev.skyit.yournews.ui.utils.SimpleRecyclerAdapter
 import dev.skyit.yournews.ui.utils.hideKeyboard
 import dev.skyit.yournews.ui.utils.mainNavController
 import dev.skyit.yournews.utils.toArrayList
@@ -34,7 +30,7 @@ class SearchNewsFragment : BaseFragment() {
     private lateinit var binding: SearchNewsFragmentBinding
 
     private val vModel: SearchNewsViewModel by viewModel()
-    private lateinit var adapter: RecyclerAdapter<ArticleDTO, SearchItemListViewBinding>
+    private lateinit var adapter: SimpleRecyclerAdapter<ArticleDTO, SearchItemListViewBinding>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +66,7 @@ class SearchNewsFragment : BaseFragment() {
 
         }
 
-        adapter = RecyclerAdapter(binderCreator =  {inflater ->
+        adapter = SimpleRecyclerAdapter(binderCreator =  { inflater ->
             SearchItemListViewBinding.inflate(inflater)
         },injectData =  { data ->
             val img = data.urlToImage

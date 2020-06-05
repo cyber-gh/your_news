@@ -5,15 +5,14 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import dev.skyit.yournews.repository.headlines.INewsHeadlinesRepository
 
-class RecyclerAdapter<T, VB : ViewDataBinding>(
+class SimpleRecyclerAdapter<T, VB : ViewDataBinding>(
     private val binderCreator: (LayoutInflater) -> VB, //TODO get rid of this somehow
     private val injectData: VB.(data: T) -> Unit,
     private val itemsList: ArrayList<T> = arrayListOf(),
     private val onItemClick: ((T) -> Unit)? = null,
     private val idKey: (T.() -> Any)? = null
-) : RecyclerView.Adapter<RecyclerAdapter<T, VB>.RecyclerViewHolder>() {
+) : RecyclerView.Adapter<SimpleRecyclerAdapter<T, VB>.RecyclerViewHolder>() {
     inner class RecyclerViewHolder(private val binding: VB) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: T) {

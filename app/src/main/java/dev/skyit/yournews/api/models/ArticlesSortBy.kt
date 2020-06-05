@@ -13,3 +13,25 @@ enum class ArticlesSortBy {
         }
     }
 }
+
+enum class CategoryFilter {
+    BUSINESS,
+    ENTERTAINMENT,
+    GENERAL,
+    HEALTH,
+    SCIENCE,
+    SPORTS,
+    TECHNOLOGY;
+
+    override fun toString(): String {
+        return when(this) {
+            BUSINESS -> "Business"
+            ENTERTAINMENT -> "Entertainment"
+            GENERAL -> "General"
+            HEALTH -> "Health"
+            SCIENCE -> "Science"
+            SPORTS -> "Sports"
+            TECHNOLOGY -> "Technology"
+        }
+    }
+}

@@ -19,4 +19,8 @@
     <string name="bookmarks">Bookmars</string>
     <string name="search_for_news">Search for news</string>
     <string name="go_to_page">Go to page</string>
+    <string name="save_later">Save for later</string>
+    <string name="share">Share</string>
+    <string name="go_to_source">Go to source</string>
+    <string name="hide_news_from_this">Hide news from this source</string>
 </resources>

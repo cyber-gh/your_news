@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_mainFragment_to_webFragment"
             app:destination="@id/webFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_articleOptionsDialog"
+            app:destination="@id/articleOptionsDialog" />
     </fragment>
     <fragment
         android:id="@+id/searchNewsFragment"
@@ -47,4 +50,9 @@
             android:name="url"
             app:argType="string" />
     </fragment>
+    <dialog
+        android:id="@+id/articleOptionsDialog"
+        android:name="dev.skyit.yournews.ui.main.newsheadlines.options.ArticleOptionsDialog"
+        android:label="ArticleOptionsDialog"
+        tools:layout="@layout/article_item_options_dialog"/>
 </navigation>

@@ -1,15 +1,11 @@
-package dev.skyit.yournews.ui.main.newsheadlines
+package dev.skyit.yournews.ui.main.newsheadlines.list
 
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +17,6 @@ import dev.skyit.yournews.databinding.NewsArticleListItemBinding
 import dev.skyit.yournews.databinding.NewsHeadlinesFragmentBinding
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.main.MainFragmentDirections
-import dev.skyit.yournews.ui.main.search.SearchNewsFragment
 import dev.skyit.yournews.ui.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -63,9 +58,11 @@ class NewsHeadlinesFragment : BaseFragment() {
             binding.swipeRefresh.isRefreshing = it == LoadStatus.REFRESHING
         })
 
-        adapter = NewsHeadlinesAdapter {
-            mainNavController.navigate(MainFragmentDirections.actionMainFragmentToWebFragment(it.url))
-        }
+        adapter = NewsHeadlinesAdapter (onItemClick = {
+                mainNavController.navigate(MainFragmentDirections.actionMainFragmentToWebFragment(it.url))
+            },onItemOptionsClick =  {
+                mainNavController.navigate(R.id.action_mainFragment_to_articleOptionsDialog)
+            })
         binding.recyclerView.adapter = adapter
         val nrColumns = if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), nrColumns)
@@ -79,7 +76,8 @@ class NewsHeadlinesFragment : BaseFragment() {
 }
 
 class NewsHeadlinesAdapter(
-    private val onItemClick: (ArticleMinimal) -> Unit
+    private val onItemClick: (ArticleMinimal) -> Unit,
+    private val onItemOptionsClick: (ArticleMinimal) -> Unit
 )
     : PagedListAdapter<ArticleMinimal, NewsHeadlinesAdapter.NewsHeadlinesViewHolder>(buildDiffUtill { this.title }) {
 
@@ -91,6 +89,10 @@ class NewsHeadlinesAdapter(
             binding.root.setOnClickListener {
                 onItemClick(data)
             }
+            binding.imageButton2.setOnClickListener {
+                onItemOptionsClick(data)
+            }
+
             if (data.imageLink != null) {
                 binding.imageView.load(data.imageLink) {
                     crossfade(true)
