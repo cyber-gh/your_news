@@ -4,7 +4,7 @@ import com.soywiz.klock.DateTime
 import dev.skyit.yournews.api.caching.ArticleEntity
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 
-fun ArticleDTO.toEntity(country: String? = null) : ArticleEntity {
+fun ArticleDTO.toEntity(country: String? = null, category: String? = null) : ArticleEntity {
     return ArticleEntity(
         country = country,
         author = author,
@@ -14,7 +14,8 @@ fun ArticleDTO.toEntity(country: String? = null) : ArticleEntity {
         source = source,
         title = title,
         url = url,
-        urlToImage = urlToImage
+        urlToImage = urlToImage,
+        category = category
 
     )
 }

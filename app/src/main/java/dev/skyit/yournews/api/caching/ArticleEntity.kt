@@ -13,6 +13,7 @@ data class ArticleEntity(
     val id: Long = 0,
 
     val country: String?,
+    val category: String?,
 
     val author: String?,
     val content: String,

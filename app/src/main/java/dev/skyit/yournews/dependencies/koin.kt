@@ -2,7 +2,8 @@ package dev.skyit.yournews.dependencies
 
 import dev.skyit.yournews.api.INetworkManger
 import dev.skyit.yournews.api.NetworkManager
-import dev.skyit.yournews.api.caching.ArticlesDatabase
+import dev.skyit.yournews.api.caching.CachedArticlesDatabase
+import dev.skyit.yournews.api.caching.IAppDatabase
 import dev.skyit.yournews.api.client.INewsAPIClient
 import dev.skyit.yournews.api.client.NewsAPIClient
 import dev.skyit.yournews.repository.headlines.INewsHeadlinesRepository
@@ -16,7 +17,6 @@ import dev.skyit.yournews.ui.main.search.SearchNewsViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.bind
 import org.koin.dsl.module
 
 
@@ -63,7 +63,7 @@ val repositoryModule = module {
 }
 
 val databaseModule = module {
-    single {
-        ArticlesDatabase(androidContext())
+    single<IAppDatabase> {
+        CachedArticlesDatabase(androidContext())
     }
 }

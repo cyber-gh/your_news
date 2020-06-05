@@ -3,15 +3,13 @@ package dev.skyit.yournews.repository.headlines
 import androidx.paging.DataSource
 import dev.skyit.yournews.api.INetworkManger
 import dev.skyit.yournews.api.caching.ArticleEntity
-import dev.skyit.yournews.api.caching.ArticlesDatabase
+import dev.skyit.yournews.api.caching.IAppDatabase
 import dev.skyit.yournews.api.client.INewsAPIClient
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
-import dev.skyit.yournews.repository.converters.toArticle
 import dev.skyit.yournews.repository.converters.toEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -27,7 +25,7 @@ interface INewsHeadlinesRepository {
 @InternalCoroutinesApi
 class NewsRepository(
     private val api: INewsAPIClient,
-    private val db: ArticlesDatabase,
+    private val db: IAppDatabase,
     private val networkManager: INetworkManger
 ) : INewsHeadlinesRepository {
 

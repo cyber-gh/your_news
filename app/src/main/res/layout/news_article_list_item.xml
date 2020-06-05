@@ -34,8 +34,8 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="center"
-                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/news_article_placeholder" />
         </androidx.cardview.widget.CardView>
 
         <TextView

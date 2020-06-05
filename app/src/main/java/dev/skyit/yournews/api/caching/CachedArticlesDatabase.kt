@@ -12,16 +12,13 @@ import androidx.room.TypeConverters
     version = 3,
     exportSchema = false
 )
-abstract class ArticlesDatabase : RoomDatabase() {
-
-
-    abstract fun articlesDao(): RoomArticlesDao
+abstract class CachedArticlesDatabase : RoomDatabase(), IAppDatabase {
 
     companion object {
-        private const val dbName = "news.db"
+        private const val dbName = "news-cache.db"
 
         @Volatile
-        private var instance: ArticlesDatabase? = null
+        private var instance: CachedArticlesDatabase? = null
         private val LOCK = Any()
 
         operator fun invoke(context: Context) = instance
@@ -34,7 +31,7 @@ abstract class ArticlesDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) = Room.databaseBuilder(
             context,
-            ArticlesDatabase::class.java,
+            CachedArticlesDatabase::class.java,
             dbName
         )
             .fallbackToDestructiveMigration()

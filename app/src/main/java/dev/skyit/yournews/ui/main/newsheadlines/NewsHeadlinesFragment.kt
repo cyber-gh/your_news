@@ -1,9 +1,11 @@
 package dev.skyit.yournews.ui.main.newsheadlines
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -65,7 +67,8 @@ class NewsHeadlinesFragment : BaseFragment() {
             mainNavController.navigate(MainFragmentDirections.actionMainFragmentToWebFragment(it.url))
         }
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
+        val nrColumns = if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), nrColumns)
         binding.recyclerView.setItemSpacing()
 
         vModel.newsPagedLive.observe(viewLifecycleOwner, Observer {
@@ -88,10 +91,18 @@ class NewsHeadlinesAdapter(
             binding.root.setOnClickListener {
                 onItemClick(data)
             }
-            data.imageLink?.let {
-                binding.imageView.load(it) {
+            if (data.imageLink != null) {
+                binding.imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                binding.imageView.load(data.imageLink) {
                     crossfade(true)
+                    placeholder(R.drawable.news_article_placeholder)
+                    this.listener(onSuccess = {data, source ->
+                        binding.imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                    })
                 }
+
+            } else {
+                binding.imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
             }
         }
     }
