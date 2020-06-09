@@ -61,7 +61,9 @@ class NewsHeadlinesFragment : BaseFragment() {
         adapter = NewsHeadlinesAdapter (onItemClick = {
                 mainNavController.navigate(MainFragmentDirections.actionMainFragmentToWebFragment(it.url))
             },onItemOptionsClick =  {
-                mainNavController.navigate(R.id.action_mainFragment_to_articleOptionsDialog)
+                mainNavController.navigate(
+                    MainFragmentDirections.actionMainFragmentToArticleOptionsDialog(it.extended)
+                )
             })
         binding.recyclerView.adapter = adapter
         val nrColumns = if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2

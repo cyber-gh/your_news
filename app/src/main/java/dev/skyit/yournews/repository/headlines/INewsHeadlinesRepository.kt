@@ -2,8 +2,8 @@ package dev.skyit.yournews.repository.headlines
 
 import androidx.paging.DataSource
 import dev.skyit.yournews.api.INetworkManger
-import dev.skyit.yournews.api.caching.ArticleEntity
-import dev.skyit.yournews.api.caching.IAppDatabase
+import dev.skyit.yournews.repository.caching.ArticleEntity
+import dev.skyit.yournews.repository.caching.IArticlesDatabase
 import dev.skyit.yournews.api.client.INewsAPIClient
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.repository.converters.toEntity
@@ -25,7 +25,7 @@ interface INewsHeadlinesRepository {
 @InternalCoroutinesApi
 class NewsRepository(
     private val api: INewsAPIClient,
-    private val db: IAppDatabase,
+    private val db: IArticlesDatabase,
     private val networkManager: INetworkManger
 ) : INewsHeadlinesRepository {
 
@@ -74,9 +74,5 @@ class NewsRepository(
             false
         }
     }
-
-
-
-
 
 }

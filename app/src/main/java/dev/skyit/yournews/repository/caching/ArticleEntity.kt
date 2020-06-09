@@ -1,6 +1,5 @@
-package dev.skyit.yournews.api.caching
+package dev.skyit.yournews.repository.caching
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -8,7 +7,7 @@ import dev.skyit.yournews.api.models.Source
 import java.io.Serializable
 
 @Entity(tableName = "articles", indices = [Index(value = ["url"], unique = true)])
-data class ArticleEntity(
+public data class ArticleEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
 

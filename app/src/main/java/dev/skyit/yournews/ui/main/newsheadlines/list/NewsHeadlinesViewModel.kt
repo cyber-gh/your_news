@@ -7,7 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.soywiz.klock.*
-import dev.skyit.yournews.api.caching.ArticleEntity
+import dev.skyit.yournews.repository.caching.ArticleEntity
+import dev.skyit.yournews.repository.converters.toMinimal
 import dev.skyit.yournews.repository.headlines.INewsHeadlinesRepository
 import dev.skyit.yournews.repository.utils.IInternetReturned
 import dev.skyit.yournews.ui.ArticleMinimal
@@ -81,11 +82,6 @@ class NewsHeadlinesViewModel(
             .setEnablePlaceholders(true)
             .build()
         newsPagedLive = initializedPagedListBuilder(config).build()
-    }
-
-    private fun ArticleEntity.toMinimal(): ArticleMinimal {
-        val tm = DateTime.fromUnix(publishedAt)
-        return ArticleMinimal(id, title, source.name, tm.relativeTime(), urlToImage, url)
     }
 
 

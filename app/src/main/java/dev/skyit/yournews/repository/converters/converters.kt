@@ -1,8 +1,10 @@
 package dev.skyit.yournews.repository.converters
 
 import com.soywiz.klock.DateTime
-import dev.skyit.yournews.api.caching.ArticleEntity
+import dev.skyit.yournews.repository.caching.ArticleEntity
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
+import dev.skyit.yournews.ui.ArticleMinimal
+import dev.skyit.yournews.ui.utils.relativeTime
 
 fun ArticleDTO.toEntity(country: String? = null, category: String? = null) : ArticleEntity {
     return ArticleEntity(
@@ -31,4 +33,10 @@ fun ArticleEntity.toArticle() : ArticleDTO {
         urlToImage = urlToImage,
         url = url
     )
+}
+
+
+fun ArticleEntity.toMinimal(): ArticleMinimal {
+    val tm = DateTime.fromUnix(publishedAt)
+    return ArticleMinimal(id, title, source.name, tm.relativeTime(), urlToImage, url, this)
 }

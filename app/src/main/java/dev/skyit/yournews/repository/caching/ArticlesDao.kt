@@ -1,4 +1,4 @@
-package dev.skyit.yournews.api.caching
+package dev.skyit.yournews.repository.caching
 
 import androidx.paging.DataSource
 import androidx.room.Dao

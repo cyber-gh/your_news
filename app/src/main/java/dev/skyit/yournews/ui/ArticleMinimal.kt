@@ -1,6 +1,7 @@
 package dev.skyit.yournews.ui
 
 import com.soywiz.klock.DateTime
+import dev.skyit.yournews.repository.caching.ArticleEntity
 
 data class ArticleMinimal(
     val id: Long = 0,
@@ -8,7 +9,8 @@ data class ArticleMinimal(
     val sources: String,
     val timePublished: String = present.toString(),
     val imageLink: String? = null,
-    val url: String
+    val url: String,
+    val extended: ArticleEntity
 )
 
 
