@@ -30,6 +30,10 @@ class MaterialToolbar : Toolbar {
         inflateView()
     }
 
+    fun setTitle(str: String) {
+        this.title_textview.text = str
+    }
+
     fun onBackPressed(callback: () -> Unit) {
         this.imageButton4.setOnClickListener {
             callback()

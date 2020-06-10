@@ -41,8 +41,12 @@ class ArticleDetailsFragment: BaseFragment() {
             mainNavController.navigateUp()
         }
 
+        binding.materialToolbar.setTitle("Article")
+
         binding.button.setOnClickListener {
-            mainNavController.navigate(ArticleDetailsFragmentDirections.actionArticleDetailsFragmentToWebFragment(args.article.url))
+            mainNavController.navigate(
+                ArticleDetailsFragmentDirections
+                    .actionArticleDetailsFragmentToWebFragment(args.article.url))
         }
     }
 }

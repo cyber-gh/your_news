@@ -3,6 +3,8 @@ package dev.skyit.yournews.api.client
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.api.models.headlines.NewsListResponse
+import dev.skyit.yournews.api.models.sources.SourceExtended
+import dev.skyit.yournews.api.models.sources.SourcesResponse
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -20,6 +22,9 @@ interface INewsAPIClient {
 
         @GET("everything")
         suspend fun searchArticles(@QueryMap options: Map<String, String>) : NewsListResponse
+
+        @GET("sources")
+        suspend fun getSources() : SourcesResponse
     }
 
 
@@ -27,6 +32,8 @@ interface INewsAPIClient {
     suspend fun getHeadlinesPaged(country: String = "us", pageNumber: Int, pageSize: Int) : List<ArticleDTO>
 
     suspend fun searchArticles(keyword: String) : List<ArticleDTO>
+
+    suspend fun getAllSources() : List<SourceExtended>
 }
 
 class NewsAPIClient: INewsAPIClient{
@@ -59,7 +66,8 @@ class NewsAPIClient: INewsAPIClient{
             .baseUrl(apiRoot)
             .client(httpClient)
             .addConverterFactory(Json.asConverterFactory(contentType))
-            .build().create(INewsAPIClient.NewsAPIService::class.java)
+            .build()
+            .create(INewsAPIClient.NewsAPIService::class.java)
     }
 
     override suspend fun getHeadlines(country: String): List<ArticleDTO> {
@@ -81,6 +89,10 @@ class NewsAPIClient: INewsAPIClient{
             "q" to keyword
         )
         return newsAPIService.searchArticles(options).articles
+    }
+
+    override suspend fun getAllSources(): List<SourceExtended> {
+        return newsAPIService.getSources().sources
     }
 
 

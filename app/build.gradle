@@ -163,5 +163,8 @@ dependencies {
     //crashlytics
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
 
+    //preferences
+    implementation "androidx.preference:preference:1.1.1"
+
 
 }

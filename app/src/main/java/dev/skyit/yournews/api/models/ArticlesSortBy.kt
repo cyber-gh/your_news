@@ -1,5 +1,8 @@
 package dev.skyit.yournews.api.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 enum class ArticlesSortBy {
     RELEVANCE,
     POPULARITY,
@@ -14,6 +17,7 @@ enum class ArticlesSortBy {
     }
 }
 
+@Serializable
 enum class CategoryFilter {
     BUSINESS,
     ENTERTAINMENT,
@@ -35,3 +39,5 @@ enum class CategoryFilter {
         }
     }
 }
+
+fun CategoryFilter.toParam() : String = this.toString().toLowerCase()

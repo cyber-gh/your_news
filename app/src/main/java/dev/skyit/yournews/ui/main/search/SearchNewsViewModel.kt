@@ -21,7 +21,7 @@ class SearchNewsViewModel(
 
     init {
         viewModelScope.launch {
-            searchQFlow.consumeAsFlow().debounce(500)
+            searchQFlow.consumeAsFlow().debounce(300)
                 .filter { it.isNotBlank() }
                 .collect {
                 updateResults(it)

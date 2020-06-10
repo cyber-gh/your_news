@@ -36,6 +36,10 @@ class MainFragment : BaseFragment() {
         binding.appToolbar.onSearch {
             findNavController().navigate(R.id.action_mainFragment_to_searchNewsFragment)
         }
+
+        binding.appToolbar.onOpenSettings {
+            findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
+        }
     }
 
 

@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_mainFragment_to_articleOptionsDialog"
             app:destination="@id/articleOptionsDialog" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchNewsFragment"
@@ -59,4 +62,9 @@
             android:name="article"
             app:argType="dev.skyit.yournews.repository.caching.ArticleEntity" />
     </dialog>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="dev.skyit.yournews.ui.main.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/settings_fragment"/>
 </navigation>

@@ -24,4 +24,6 @@
     <string name="go_to_source">Go to source</string>
     <string name="hide_news_from_this">Hide news from this source</string>
     <string name="not_available">Not available yet</string>
+    <string name="get_notifications">Get Notifications</string>
+    <string name="use_mini_card">Use mini cards</string>
 </resources>

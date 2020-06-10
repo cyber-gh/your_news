@@ -1,10 +1,7 @@
 package dev.skyit.yournews
 
 import android.app.Application
-import dev.skyit.yournews.dependencies.apiModule
-import dev.skyit.yournews.dependencies.databaseModule
-import dev.skyit.yournews.dependencies.repositoryModule
-import dev.skyit.yournews.dependencies.viewModelsModule
+import dev.skyit.yournews.dependencies.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -28,7 +25,8 @@ class BaseApp : Application() {
                 apiModule,
                 repositoryModule,
                 viewModelsModule,
-                databaseModule
+                databaseModule,
+                preferencesModule
             ))
         }
     }

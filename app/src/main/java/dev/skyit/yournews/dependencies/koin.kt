@@ -12,6 +12,8 @@ import dev.skyit.yournews.repository.favorites.FavouriteNewsRepo
 import dev.skyit.yournews.repository.favorites.IFavouriteNewsRepo
 import dev.skyit.yournews.repository.headlines.INewsHeadlinesRepository
 import dev.skyit.yournews.repository.headlines.NewsRepository
+import dev.skyit.yournews.repository.preferences.IUserPreferences
+import dev.skyit.yournews.repository.preferences.UserPreferences
 import dev.skyit.yournews.repository.searching.ISearchNews
 import dev.skyit.yournews.repository.searching.SearchNewsRepo
 import dev.skyit.yournews.repository.utils.IInternetReturned
@@ -90,5 +92,11 @@ val databaseModule = module {
 
     single {
         AppDatabase(androidContext())
+    }
+}
+
+val preferencesModule = module {
+    single<IUserPreferences> {
+        UserPreferences(androidContext())
     }
 }
