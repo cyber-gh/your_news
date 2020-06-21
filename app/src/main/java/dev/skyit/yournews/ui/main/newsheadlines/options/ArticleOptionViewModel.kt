@@ -4,7 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.skyit.yournews.repository.database.ArticleEntity
-import dev.skyit.yournews.repository.database.IFavouriteNewsRepo
+import dev.skyit.yournews.repository.headlines.IFavouriteNewsRepo
 import dev.skyit.yournews.repository.newsources.INewsSourceRepo
 import dev.skyit.yournews.ui.utils.SingleLiveEvent
 import kotlinx.coroutines.launch

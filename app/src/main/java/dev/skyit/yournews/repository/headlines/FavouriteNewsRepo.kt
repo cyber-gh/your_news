@@ -1,5 +1,7 @@
-package dev.skyit.yournews.repository.database
+package dev.skyit.yournews.repository.headlines
 
+import dev.skyit.yournews.repository.database.AppDatabase
+import dev.skyit.yournews.repository.database.ArticleEntity
 import javax.inject.Inject
 
 

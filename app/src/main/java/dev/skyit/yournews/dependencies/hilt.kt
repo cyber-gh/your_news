@@ -5,8 +5,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.skyit.yournews.api.INetworkManger
@@ -14,8 +12,8 @@ import dev.skyit.yournews.api.NetworkManager
 import dev.skyit.yournews.api.client.INewsAPIClient
 import dev.skyit.yournews.api.client.NewsAPIClient
 import dev.skyit.yournews.repository.database.AppDatabase
-import dev.skyit.yournews.repository.database.FavouriteNewsRepo
-import dev.skyit.yournews.repository.database.IFavouriteNewsRepo
+import dev.skyit.yournews.repository.headlines.FavouriteNewsRepo
+import dev.skyit.yournews.repository.headlines.IFavouriteNewsRepo
 import dev.skyit.yournews.repository.headlines.INewsHeadlinesRepository
 import dev.skyit.yournews.repository.headlines.NewsRepository
 import dev.skyit.yournews.repository.newsources.INewsSourceRepo

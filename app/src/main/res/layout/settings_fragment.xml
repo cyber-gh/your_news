@@ -28,11 +28,11 @@
         app:layout_constraintTop_toBottomOf="@+id/materialToolbar3">
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/notifications_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
-            android:padding="8dp"
+            android:padding="16dp"
             android:text="@string/get_notifications"
             android:textSize="18sp" />
 
@@ -43,11 +43,11 @@
             android:layout_height="2dp" />
 
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/mini_cards_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
-            android:padding="8dp"
+            android:padding="16dp"
             android:text="@string/use_mini_card"
             android:textSize="18sp" />
 
@@ -58,6 +58,7 @@
             android:layout_height="2dp" />
 
         <dev.skyit.yournews.ui.custom.SelectButton
+            android:id="@+id/prefferred_country"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"

@@ -6,4 +6,13 @@ enum class CountryFilter {
     override fun toString(): String {
         return super.toString().toLowerCase()
     }
+
+    companion object {
+
+        fun fromString(str: String): CountryFilter {
+            return CountryFilter.values().firstOrNull {
+                it.toString() == str
+            } ?: US
+        }
+    }
 }

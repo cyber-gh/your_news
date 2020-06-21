@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.skyit.yournews.api.models.sources.SourceExtended
+import dev.skyit.yournews.repository.database.dao.ArticlesDao
+import dev.skyit.yournews.repository.database.dao.SourcesDao
 
 
 @TypeConverters(SpecialTypeConverters::class)

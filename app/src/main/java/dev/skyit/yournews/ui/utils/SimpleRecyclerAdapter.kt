@@ -1,10 +1,16 @@
 package dev.skyit.yournews.ui.utils
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+
+
+abstract class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    abstract fun bind(item: T)
+}
 
 class SimpleRecyclerAdapter<T, VB : ViewDataBinding>(
     private val binderCreator: (LayoutInflater) -> VB, //TODO get rid of this somehow

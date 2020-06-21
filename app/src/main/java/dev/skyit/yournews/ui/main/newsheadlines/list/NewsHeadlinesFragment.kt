@@ -16,10 +16,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
+import dev.skyit.yournews.databinding.NewsArticleListItemSmallBinding
 import dev.skyit.yournews.databinding.NewsHeadlinesFragmentBinding
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.main.MainFragmentDirections
 import dev.skyit.yournews.ui.utils.*
+import java.lang.IllegalArgumentException
 
 
 @AndroidEntryPoint
@@ -38,6 +40,16 @@ class NewsHeadlinesFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        vModel.reloadSettings()
+
+        val currentCardType = if (vModel.useMiniCards) 0 else 1
+        if (currentCardType != adapter.cardType) {
+            setupRecyclerView()
+        }
+
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,14 +73,7 @@ class NewsHeadlinesFragment : BaseFragment() {
             binding.swipeRefresh.isRefreshing = it == LoadStatus.REFRESHING
         })
 
-        adapter = NewsHeadlinesAdapter (onItemClick = {
-                mainNavController.navigate(MainFragmentDirections.actionMainFragmentToWebFragment(it.url))
-            },onItemOptionsClick =  {
-                mainNavController.navigate(
-                    MainFragmentDirections.actionMainFragmentToArticleOptionsDialog(it.extended)
-                )
-            })
-        binding.recyclerView.adapter = adapter
+        setupRecyclerView()
         val nrColumns = if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), nrColumns)
         binding.recyclerView.setItemSpacing()
@@ -78,17 +83,37 @@ class NewsHeadlinesFragment : BaseFragment() {
         })
     }
 
+    private fun setupRecyclerView() {
+
+        adapter = NewsHeadlinesAdapter(onItemClick = {
+            mainNavController.navigate(MainFragmentDirections.actionMainFragmentToWebFragment(it.url))
+        }, onItemOptionsClick = {
+            mainNavController.navigate(
+                MainFragmentDirections.actionMainFragmentToArticleOptionsDialog(it.extended)
+            )
+        }, cardType = if (vModel.useMiniCards) 0 else 1)
+        binding.recyclerView.adapter = adapter
+    }
+
 }
+
+
 
 class NewsHeadlinesAdapter(
     private val onItemClick: (ArticleMinimal) -> Unit,
-    private val onItemOptionsClick: (ArticleMinimal) -> Unit
-)
-    : PagedListAdapter<ArticleMinimal, NewsHeadlinesAdapter.NewsHeadlinesViewHolder>(buildDiffUtill { this.title }) {
+    private val onItemOptionsClick: (ArticleMinimal) -> Unit,
+    val cardType: Int = normalView
+) : PagedListAdapter<ArticleMinimal, BaseViewHolder<ArticleMinimal>>(buildDiffUtill { this.title }) {
 
-    inner class NewsHeadlinesViewHolder(private val binding: NewsArticleListItemBinding):
-            RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: ArticleMinimal) {
+    companion object {
+        val miniCardView: Int = 0
+        val normalView: Int = 1
+    }
+
+    inner class NormalNewsHeadlinesViewHolder(
+        private val binding: NewsArticleListItemBinding
+    ): BaseViewHolder<ArticleMinimal>(binding.root) {
+        override fun bind(data: ArticleMinimal) {
             binding.data = data
             binding.executePendingBindings()
             binding.root.setOnClickListener {
@@ -108,17 +133,55 @@ class NewsHeadlinesAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsHeadlinesViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = NewsArticleListItemBinding.inflate(inflater)
-        return NewsHeadlinesViewHolder(binding)
+    inner class MiniNewsHeadlinesViewHolder(
+        private val binding: NewsArticleListItemSmallBinding
+    ): BaseViewHolder<ArticleMinimal>(binding.root) {
+        override fun bind(data: ArticleMinimal) {
+            binding.data = data
+            binding.executePendingBindings()
+            binding.root.setOnClickListener {
+                onItemClick(data)
+            }
+            binding.imageButton2.setOnClickListener {
+                onItemOptionsClick(data)
+            }
+
+            if (data.imageLink != null) {
+                binding.imageView.load(data.imageLink) {
+                    crossfade(true)
+                    placeholder(R.drawable.news_article_placeholder)
+
+                }
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: NewsHeadlinesViewHolder, position: Int) {
+    override fun getItemViewType(position: Int): Int {
+        return cardType
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ArticleMinimal> {
+        val inflater = LayoutInflater.from(parent.context)
+        return when(viewType) {
+            miniCardView -> {
+                val binding = NewsArticleListItemSmallBinding.inflate(inflater)
+                MiniNewsHeadlinesViewHolder(binding)
+            }
+            normalView -> {
+                val binding = NewsArticleListItemBinding.inflate(inflater)
+                NormalNewsHeadlinesViewHolder(binding)
+            }
+            else -> throw IllegalArgumentException("Not supported view type")
+        }
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder<ArticleMinimal>, position: Int) {
         getItem(position)?.let {
             holder.bind(it)
         }
     }
+
+
 
 
 

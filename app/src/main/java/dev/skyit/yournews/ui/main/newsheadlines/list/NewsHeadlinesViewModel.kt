@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import dev.skyit.yournews.api.models.CountryFilter
 import dev.skyit.yournews.repository.converters.toMinimal
 import dev.skyit.yournews.repository.headlines.INewsHeadlinesRepository
+import dev.skyit.yournews.repository.preferences.IUserPreferences
 import dev.skyit.yournews.repository.utils.IInternetReturned
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.utils.SingleLiveEvent
@@ -19,7 +21,8 @@ import kotlinx.coroutines.launch
 class NewsHeadlinesViewModel
     @ViewModelInject constructor(
         private val newsRepo: INewsHeadlinesRepository,
-        private val networkManager: IInternetReturned
+        private val networkManager: IInternetReturned,
+        private val userPreferences: IUserPreferences
     ) : ViewModel() {
 
     init {
@@ -38,7 +41,7 @@ class NewsHeadlinesViewModel
 
     val internetReconnected = MutableLiveData<Unit>()
 
-    private val countryName: String = "us"
+    private var countryName: String = userPreferences.preferredCountry
     private val pageSize: Int = 10
 
     fun refreshList() {
@@ -82,6 +85,16 @@ class NewsHeadlinesViewModel
             .build()
         newsPagedLive = initializedPagedListBuilder(config).build()
     }
+
+    fun reloadSettings() {
+        if (countryName != userPreferences.preferredCountry) {
+            countryName = userPreferences.preferredCountry
+            refreshList()
+        }
+    }
+
+    val useMiniCards: Boolean
+    get() = userPreferences.useMiniCards
 
 
 

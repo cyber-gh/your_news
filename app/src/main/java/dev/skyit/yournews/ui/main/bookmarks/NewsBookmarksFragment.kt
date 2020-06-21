@@ -8,16 +8,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import dagger.hilt.android.AndroidEntryPoint
 import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
+import dev.skyit.yournews.databinding.NewsArticleListItemBindingImpl
+import dev.skyit.yournews.databinding.NewsArticleListItemSmallBinding
 import dev.skyit.yournews.databinding.NewsBookmarksFragmentBinding
+import dev.skyit.yournews.repository.database.ArticleEntity
+import dev.skyit.yournews.repository.preferences.IUserPreferences
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.utils.SimpleRecyclerAdapter
 import dev.skyit.yournews.ui.utils.setItemSpacing
 import dev.skyit.yournews.utils.toArrayList
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -27,7 +33,8 @@ class NewsBookmarksFragment: BaseFragment() {
 
     private val vModel: NewsBookmarksViewModel by viewModels()
 
-    private lateinit var adapter : SimpleRecyclerAdapter<ArticleMinimal, NewsArticleListItemBinding>
+    @Inject
+    protected lateinit var userPreferences: IUserPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,24 +48,47 @@ class NewsBookmarksFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = SimpleRecyclerAdapter(
-            binderCreator = {
-                NewsArticleListItemBinding.inflate(it)
-            },
-            injectData = { data ->
-                this.data = data
-                if (data.imageLink != null) {
-                    this.imageView.load(data.imageLink) {
-                        crossfade(true)
-                        placeholder(R.drawable.news_article_placeholder)
+        val adapter: SimpleRecyclerAdapter<ArticleMinimal, *> = if (!userPreferences.useMiniCards) {
 
+            SimpleRecyclerAdapter(
+                binderCreator = {
+                    NewsArticleListItemBinding.inflate(it)
+                },
+                injectData = { data ->
+                    this.data = data
+                    if (data.imageLink != null) {
+                        this.imageView.load(data.imageLink) {
+                            crossfade(true)
+                            placeholder(R.drawable.news_article_placeholder)
+
+                        }
                     }
+                },
+                idKey = {
+                    url
                 }
-            },
-            idKey = {
-                url
-            }
-        )
+            )
+        } else {
+            SimpleRecyclerAdapter(
+                binderCreator = {
+                    NewsArticleListItemSmallBinding.inflate(it)
+                },
+                injectData = { data ->
+                    this.data = data
+                    if (data.imageLink != null) {
+                        this.imageView.load(data.imageLink) {
+                            crossfade(true)
+                            placeholder(R.drawable.news_article_placeholder)
+
+                        }
+                    }
+                },
+                idKey = {
+                    url
+                }
+            )
+        }
+
 
         binding.recyclerList.adapter = adapter
         val nrColumns = if (requireContext().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
@@ -81,3 +111,6 @@ class NewsBookmarksFragment: BaseFragment() {
 
 
 }
+
+
+

@@ -1,10 +1,10 @@
-package dev.skyit.yournews.repository.database
+package dev.skyit.yournews.repository.database.dao
 
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import dev.skyit.yournews.repository.database.ArticleEntity
 
 
 @Dao

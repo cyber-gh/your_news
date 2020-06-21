@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.skyit.yournews.repository.converters.toMinimal
-import dev.skyit.yournews.repository.database.IFavouriteNewsRepo
+import dev.skyit.yournews.repository.headlines.IFavouriteNewsRepo
 import dev.skyit.yournews.ui.ArticleMinimal
 import kotlinx.coroutines.launch
 

@@ -1,4 +1,4 @@
-package dev.skyit.yournews.repository.database
+package dev.skyit.yournews.repository.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

@@ -15,6 +15,9 @@ interface IUserPreferences {
 
     var preferredCategories: List<CategoryFilter>
 
+    var useMiniCards: Boolean
+    var getNotifications: Boolean
+
 }
 
 interface ISharedPreferences {
@@ -47,7 +50,8 @@ class UserPreferences @Inject constructor(
             }
         }
     )
-
+    override var useMiniCards: Boolean by PreferenceBool(key = "useMiniCards")
+    override var getNotifications: Boolean by PreferenceBool(key = "getNotifications")
 
 
 }

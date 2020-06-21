@@ -22,6 +22,20 @@ class PreferenceString(
 
 }
 
+class PreferenceBool(
+    private val key: String,
+    private val defaultValue: Boolean = false
+) : ReadWriteProperty<ISharedPreferences, Boolean>{
+    override fun getValue(thisRef: ISharedPreferences, property: KProperty<*>): Boolean {
+        return thisRef.pref.getBoolean(key, defaultValue) ?: defaultValue
+    }
+
+    override fun setValue(thisRef: ISharedPreferences, property: KProperty<*>, value: Boolean) {
+        thisRef.pref.edit().putBoolean(key, value).apply()
+    }
+
+}
+
 class PreferenceProperty<T>(
     private val key: String,
     private val defaultValue: T,
