@@ -5,24 +5,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.ArticleItemOptionsDialogBinding
 import dev.skyit.yournews.ui.utils.errAlert
 import dev.skyit.yournews.ui.utils.snack
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 
+@AndroidEntryPoint
 class ArticleOptionsDialog : BottomSheetDialogFragment() {
     private lateinit var binding: ArticleItemOptionsDialogBinding
 
     private val args: ArticleOptionsDialogArgs by navArgs()
 
-    private val vModel: ArticleOptionViewModel by viewModel{
-        parametersOf(args.article)
-    }
+    private val vModel: ArticleOptionViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +42,7 @@ class ArticleOptionsDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vModel.inject(args.article)
         binding.bookmarkBtn.setOnClickListener {
             vModel.bookmark()
 
@@ -52,8 +54,8 @@ class ArticleOptionsDialog : BottomSheetDialogFragment() {
         binding.shareBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, vModel.article.url)
-            intent.putExtra(Intent.EXTRA_SUBJECT, vModel.article.title)
+            intent.putExtra(Intent.EXTRA_TEXT, args.article.url)
+            intent.putExtra(Intent.EXTRA_SUBJECT, args.article.title)
             startActivity(intent)
         }
 
@@ -62,8 +64,14 @@ class ArticleOptionsDialog : BottomSheetDialogFragment() {
         }
 
         binding.visitSourceBtn.setOnClickListener {
-            errAlert(getString(R.string.not_available))
+            vModel.getSource()
         }
+
+        vModel.sourceLinkLive.observe(viewLifecycleOwner, Observer {
+            findNavController().navigate(
+                ArticleOptionsDialogDirections.actionArticleOptionsDialogToWebFragment(it)
+            )
+        })
     }
 
 }

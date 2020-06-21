@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
@@ -18,13 +20,14 @@ import dev.skyit.yournews.databinding.NewsHeadlinesFragmentBinding
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.main.MainFragmentDirections
 import dev.skyit.yournews.ui.utils.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
+@AndroidEntryPoint
 class NewsHeadlinesFragment : BaseFragment() {
     private lateinit var binding: NewsHeadlinesFragmentBinding
 
     private lateinit var adapter: NewsHeadlinesAdapter
-    private val vModel: NewsHeadlinesViewModel by viewModel()
+    private val vModel: NewsHeadlinesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

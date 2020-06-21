@@ -1,12 +1,14 @@
 package dev.skyit.yournews.repository.converters
 
 import com.soywiz.klock.DateTime
-import dev.skyit.yournews.repository.caching.ArticleEntity
+import dev.skyit.yournews.repository.database.ArticleEntity
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.utils.relativeTime
 
-fun ArticleDTO.toEntity(country: String? = null, category: String? = null) : ArticleEntity {
+fun ArticleDTO.toEntity(
+    country: String? = null,
+    category: String? = null) : ArticleEntity {
     return ArticleEntity(
         country = country,
         author = author,
@@ -17,7 +19,8 @@ fun ArticleDTO.toEntity(country: String? = null, category: String? = null) : Art
         title = title,
         url = url,
         urlToImage = urlToImage,
-        category = category
+        category = category,
+        isBookmarked = 0
 
     )
 }

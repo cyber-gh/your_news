@@ -1,15 +1,14 @@
 package dev.skyit.yournews
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import dev.skyit.yournews.dependencies.*
 import kotlinx.coroutines.InternalCoroutinesApi
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
+
 import timber.log.Timber
 
 @InternalCoroutinesApi
+@HiltAndroidApp
 class BaseApp : Application() {
     override fun onCreate() {
         super.onCreate()
@@ -17,17 +16,5 @@ class BaseApp : Application() {
         Timber.plant(Timber.DebugTree())
 
 
-        startKoin {
-            androidLogger(Level.DEBUG)
-            androidContext(this@BaseApp)
-
-            modules(listOf(
-                apiModule,
-                repositoryModule,
-                viewModelsModule,
-                databaseModule,
-                preferencesModule
-            ))
-        }
     }
 }

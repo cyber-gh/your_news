@@ -6,6 +6,7 @@ plugins {
     id 'kotlinx-serialization'
     id "androidx.navigation.safeargs.kotlin"
     id 'com.google.gms.google-services'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -93,14 +94,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
-    // Koin
-    implementation "org.koin:koin-android:2.0.1"
-    implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
-    implementation 'org.koin:koin-androidx-scope:2.0.1'
-    // Koin testing tools
-    testImplementation "org.koin:koin-test:2.0.1"
-    testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
-
     //Material UI
     implementation 'com.google.android.material:material:1.2.0-alpha06'
     //Do not update, nasty bug in alpha 02
@@ -165,6 +158,15 @@ dependencies {
 
     //preferences
     implementation "androidx.preference:preference:1.1.1"
+
+    // Hilt DI framework
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    implementation "androidx.fragment:fragment-ktx:1.2.4"
+    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha01'
+//    kaptAndroidTest "androidx.hilt:hilt-compiler:$hilt_version"
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01'
 
 
 }

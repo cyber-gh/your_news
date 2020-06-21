@@ -39,7 +39,7 @@
         tools:layout="@layout/article_details_fragment">
         <argument
             android:name="article"
-            app:argType="dev.skyit.yournews.repository.caching.ArticleEntity" />
+            app:argType="dev.skyit.yournews.repository.database.ArticleEntity" />
         <action
             android:id="@+id/action_articleDetailsFragment_to_webFragment"
             app:destination="@id/webFragment" />
@@ -60,7 +60,10 @@
         tools:layout="@layout/article_item_options_dialog">
         <argument
             android:name="article"
-            app:argType="dev.skyit.yournews.repository.caching.ArticleEntity" />
+            app:argType="dev.skyit.yournews.repository.database.ArticleEntity" />
+        <action
+            android:id="@+id/action_articleOptionsDialog_to_webFragment"
+            app:destination="@id/webFragment" />
     </dialog>
     <fragment
         android:id="@+id/settingsFragment"

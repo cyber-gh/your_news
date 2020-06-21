@@ -5,7 +5,7 @@
     <data>
         <variable
             name="article"
-            type="dev.skyit.yournews.repository.caching.ArticleEntity" />
+            type="dev.skyit.yournews.repository.database.ArticleEntity" />
     </data>
 
 <ScrollView

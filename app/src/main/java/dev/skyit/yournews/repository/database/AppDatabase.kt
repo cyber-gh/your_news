@@ -1,26 +1,25 @@
-package dev.skyit.yournews.repository.favorites
+package dev.skyit.yournews.repository.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import dev.skyit.yournews.repository.caching.ArticleEntity
-import dev.skyit.yournews.repository.caching.IArticlesDatabase
-import dev.skyit.yournews.repository.caching.RoomArticlesDao
-import dev.skyit.yournews.repository.caching.SpecialTypeConverters
+import dev.skyit.yournews.api.models.sources.SourceExtended
 
 
 @TypeConverters(SpecialTypeConverters::class)
 @Database(
-    entities = [ArticleEntity::class],
-    version = 1,
+    entities = [ArticleEntity::class, SourceExtended::class],
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
 
-    abstract fun articlesDao(): BookmarkedArticlesDao
+    abstract fun articlesDao(): ArticlesDao
+
+    abstract fun sourcesDao(): SourcesDao
 
     companion object {
         private const val dbName = "news.db"

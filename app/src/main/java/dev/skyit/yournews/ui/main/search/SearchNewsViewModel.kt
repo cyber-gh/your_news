@@ -1,5 +1,6 @@
 package dev.skyit.yournews.ui.main.search
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,9 +12,10 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class SearchNewsViewModel(
-    private val repo: ISearchNews
-) : ViewModel() {
+class SearchNewsViewModel
+    @ViewModelInject constructor(
+        private val repo: ISearchNews
+    ) : ViewModel() {
 
     val searchResults = MutableLiveData<List<ArticleDTO>>()
 

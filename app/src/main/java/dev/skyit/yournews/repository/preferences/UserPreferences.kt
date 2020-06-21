@@ -3,10 +3,12 @@ package dev.skyit.yournews.repository.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.skyit.yournews.api.models.CategoryFilter
 import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
+import javax.inject.Inject
 
 interface IUserPreferences {
     var preferredCountry: String
@@ -19,8 +21,8 @@ interface ISharedPreferences {
     val pref: SharedPreferences
 }
 
-class UserPreferences(
-    private val context: Context
+class UserPreferences @Inject constructor(
+    @ApplicationContext private val context: Context
 ): IUserPreferences, ISharedPreferences {
 
     override val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)

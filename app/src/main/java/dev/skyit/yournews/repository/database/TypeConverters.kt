@@ -1,4 +1,4 @@
-package dev.skyit.yournews.repository.caching
+package dev.skyit.yournews.repository.database
 
 import androidx.room.TypeConverter
 import dev.skyit.yournews.api.models.Source

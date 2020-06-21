@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
+import dagger.hilt.android.AndroidEntryPoint
 import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
@@ -16,13 +18,14 @@ import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.utils.SimpleRecyclerAdapter
 import dev.skyit.yournews.ui.utils.setItemSpacing
 import dev.skyit.yournews.utils.toArrayList
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
+@AndroidEntryPoint
 class NewsBookmarksFragment: BaseFragment() {
 
     private lateinit var binding: NewsBookmarksFragmentBinding
 
-    private val vModel: NewsBookmarksViewModel by viewModel()
+    private val vModel: NewsBookmarksViewModel by viewModels()
 
     private lateinit var adapter : SimpleRecyclerAdapter<ArticleMinimal, NewsArticleListItemBinding>
 

@@ -3,11 +3,13 @@ package dev.skyit.yournews.api
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import javax.inject.Inject
 
 interface INetworkManger {
 
@@ -18,9 +20,11 @@ interface INetworkManger {
 
 }
 
-class NetworkManager (
-    private val context: Context
-) : INetworkManger {
+class NetworkManager
+    @Inject
+    constructor(
+        @ApplicationContext private val context: Context
+    ) : INetworkManger {
 
     private val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 

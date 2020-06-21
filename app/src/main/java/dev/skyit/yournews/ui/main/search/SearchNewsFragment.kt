@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionInflater
 import coil.api.load
 import coil.transform.CircleCropTransformation
+import dagger.hilt.android.AndroidEntryPoint
 import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.databinding.SearchItemListViewBinding
@@ -22,14 +24,15 @@ import dev.skyit.yournews.ui.utils.SimpleRecyclerAdapter
 import dev.skyit.yournews.ui.utils.hideKeyboard
 import dev.skyit.yournews.ui.utils.mainNavController
 import dev.skyit.yournews.utils.toArrayList
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
+
+@AndroidEntryPoint
 class SearchNewsFragment : BaseFragment() {
 
     private lateinit var binding: SearchNewsFragmentBinding
 
-    private val vModel: SearchNewsViewModel by viewModel()
+    private val vModel: SearchNewsViewModel by viewModels()
     private lateinit var adapter: SimpleRecyclerAdapter<ArticleDTO, SearchItemListViewBinding>
 
     override fun onCreate(savedInstanceState: Bundle?) {

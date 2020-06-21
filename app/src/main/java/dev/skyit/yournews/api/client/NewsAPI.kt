@@ -5,6 +5,7 @@ import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.api.models.headlines.NewsListResponse
 import dev.skyit.yournews.api.models.sources.SourceExtended
 import dev.skyit.yournews.api.models.sources.SourcesResponse
+import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -13,6 +14,7 @@ import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
+import javax.inject.Inject
 
 
 interface INewsAPIClient {
@@ -36,7 +38,7 @@ interface INewsAPIClient {
     suspend fun getAllSources() : List<SourceExtended>
 }
 
-class NewsAPIClient: INewsAPIClient{
+class NewsAPIClient @Inject constructor(): INewsAPIClient{
 
     private val apiRoot = "https://newsapi.org/v2/"
     private val contentType =  "application/json".toMediaType()
@@ -61,6 +63,7 @@ class NewsAPIClient: INewsAPIClient{
             }.build()
     }
 
+    @OptIn(UnstableDefault::class)
     private val newsAPIService: INewsAPIClient.NewsAPIService by lazy{
         Retrofit.Builder()
             .baseUrl(apiRoot)

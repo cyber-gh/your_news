@@ -1,27 +1,26 @@
 package dev.skyit.yournews.ui.main.newsheadlines.list
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.soywiz.klock.*
-import dev.skyit.yournews.repository.caching.ArticleEntity
 import dev.skyit.yournews.repository.converters.toMinimal
 import dev.skyit.yournews.repository.headlines.INewsHeadlinesRepository
 import dev.skyit.yournews.repository.utils.IInternetReturned
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.utils.SingleLiveEvent
-import dev.skyit.yournews.ui.utils.relativeTime
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
-class NewsHeadlinesViewModel(
-    private val newsRepo: INewsHeadlinesRepository,
-    private val networkManager: IInternetReturned
-) : ViewModel() {
+class NewsHeadlinesViewModel
+    @ViewModelInject constructor(
+        private val newsRepo: INewsHeadlinesRepository,
+        private val networkManager: IInternetReturned
+    ) : ViewModel() {
 
     init {
         viewModelScope.launch {

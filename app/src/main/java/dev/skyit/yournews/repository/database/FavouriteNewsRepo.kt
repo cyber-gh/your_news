@@ -1,7 +1,6 @@
-package dev.skyit.yournews.repository.favorites
+package dev.skyit.yournews.repository.database
 
-import androidx.paging.DataSource
-import dev.skyit.yournews.repository.caching.ArticleEntity
+import javax.inject.Inject
 
 
 interface IFavouriteNewsRepo {
@@ -9,15 +8,16 @@ interface IFavouriteNewsRepo {
     suspend fun addBookmark(articleEntity: ArticleEntity)
 }
 
-class FavouriteNewsRepo(
-    private val db: AppDatabase
-) : IFavouriteNewsRepo {
+class FavouriteNewsRepo
+    @Inject constructor(
+        private val db: AppDatabase
+    ) : IFavouriteNewsRepo {
     override suspend fun getBookmarkedArticles(): List<ArticleEntity> {
         return db.articlesDao().getBookmarkedArticles()
     }
 
     override suspend fun addBookmark(articleEntity: ArticleEntity) {
-        db.articlesDao().addArticle(articleEntity)
+        db.articlesDao().bookmarkArticle(articleEntity.url)
     }
 
 }

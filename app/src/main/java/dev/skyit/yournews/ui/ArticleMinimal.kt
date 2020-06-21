@@ -1,7 +1,7 @@
 package dev.skyit.yournews.ui
 
 import com.soywiz.klock.DateTime
-import dev.skyit.yournews.repository.caching.ArticleEntity
+import dev.skyit.yournews.repository.database.ArticleEntity
 
 data class ArticleMinimal(
     val id: Long = 0,

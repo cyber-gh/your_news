@@ -2,16 +2,17 @@ package dev.skyit.yournews.repository.headlines
 
 import androidx.paging.DataSource
 import dev.skyit.yournews.api.INetworkManger
-import dev.skyit.yournews.repository.caching.ArticleEntity
-import dev.skyit.yournews.repository.caching.IArticlesDatabase
+import dev.skyit.yournews.repository.database.ArticleEntity
 import dev.skyit.yournews.api.client.INewsAPIClient
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.repository.converters.toEntity
+import dev.skyit.yournews.repository.database.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 interface INewsHeadlinesRepository {
     fun headlinesDataSource(country: String) : DataSource.Factory<Int, ArticleEntity>
@@ -23,15 +24,14 @@ interface INewsHeadlinesRepository {
 }
 
 @InternalCoroutinesApi
-class NewsRepository(
-    private val api: INewsAPIClient,
-    private val db: IArticlesDatabase,
-    private val networkManager: INetworkManger
-) : INewsHeadlinesRepository {
+class NewsRepository
+    @Inject constructor(
+        private val api: INewsAPIClient,
+        private val db: AppDatabase,
+        private val networkManager: INetworkManger
+    ) : INewsHeadlinesRepository {
 
     private val scope = CoroutineScope(Dispatchers.IO)
-
-
 
 
     private fun cache(forCountry: String, data: List<ArticleDTO>) {

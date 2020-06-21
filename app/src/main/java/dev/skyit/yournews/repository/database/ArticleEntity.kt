@@ -1,4 +1,4 @@
-package dev.skyit.yournews.repository.caching
+package dev.skyit.yournews.repository.database
 
 import androidx.room.Entity
 import androidx.room.Index
@@ -7,12 +7,13 @@ import dev.skyit.yournews.api.models.Source
 import java.io.Serializable
 
 @Entity(tableName = "articles", indices = [Index(value = ["url"], unique = true)])
-public data class ArticleEntity(
+data class ArticleEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
 
     val country: String?,
     val category: String?,
+    val isBookmarked: Int = 0,
 
     val author: String?,
     val content: String?,

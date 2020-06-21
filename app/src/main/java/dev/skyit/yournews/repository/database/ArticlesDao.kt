@@ -1,4 +1,4 @@
-package dev.skyit.yournews.repository.caching
+package dev.skyit.yournews.repository.database
 
 import androidx.paging.DataSource
 import androidx.room.Dao
@@ -6,12 +6,18 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+
 @Dao
-interface RoomArticlesDao {
+interface ArticlesDao {
 
+    @Query("select * from articles where isBookmarked = 1")
+    suspend fun getBookmarkedArticles() : List<ArticleEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg articleEntity: ArticleEntity) : List<Long>
+    @Query("update articles set isBookmarked = 1 where url = :url")
+    suspend fun bookmarkArticle(url : String)
+
+    @Insert
+    suspend fun insertAll(vararg articles: ArticleEntity)
 
     @Query("SELECT * FROM articles where country = :country order by publishedAt desc")
     fun articlesDataSource(country: String): DataSource.Factory<Int, ArticleEntity>
@@ -19,7 +25,7 @@ interface RoomArticlesDao {
     @Query("Select count(*) from articles where country = :country")
     suspend fun articlesNr(country: String) : Int
 
-    @Query("delete from articles where country = :country")
+    @Query("delete from articles where country = :country and isBookmarked = 0")
     suspend fun deleteByCountry(country: String)
 
     @Query("select * from articles where url = :url")
