@@ -10,6 +10,14 @@ import dev.skyit.yournews.ui.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+class SharedArticleOptionViewModel
+    @ViewModelInject constructor() : ViewModel() {
+
+    val articleDeletedEvent = SingleLiveEvent<Unit>()
+
+
+}
+
 class ArticleOptionViewModel
     @ViewModelInject constructor(
         private val favouriteNewsRepo: IFavouriteNewsRepo,

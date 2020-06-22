@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -15,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.ArticleItemOptionsDialogBinding
 import dev.skyit.yournews.ui.utils.errAlert
-import dev.skyit.yournews.ui.utils.snack
+import dev.skyit.yournews.ui.utils.toastl
 
 
 @AndroidEntryPoint
@@ -29,6 +30,7 @@ class ArticleOptionsDialog : BottomSheetDialogFragment() {
     private val args: ArticleOptionsDialogArgs by navArgs()
 
     private val vModel: ArticleOptionViewModel by viewModels()
+    private val sharedVModel: SharedArticleOptionViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +65,7 @@ class ArticleOptionsDialog : BottomSheetDialogFragment() {
         binding.bookmarkBtn.setOnClickListener {
             vModel.bookmark()
 
-            snack("Article bookmarked")
+            context?.toastl("Article bookmarked")
             dismiss()
 
         }
@@ -71,7 +73,8 @@ class ArticleOptionsDialog : BottomSheetDialogFragment() {
         binding.removeBookmarkBtn.setOnClickListener {
             vModel.removeBookmark()
 
-            snack("Article removed")
+            context?.toastl("Article removed")
+            sharedVModel.articleDeletedEvent.value = Unit
             dismiss()
         }
 

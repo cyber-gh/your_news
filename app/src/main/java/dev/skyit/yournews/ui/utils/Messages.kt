@@ -3,6 +3,7 @@ package dev.skyit.yournews.ui.utils
 import android.content.Context
 import android.content.DialogInterface
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
@@ -26,4 +27,8 @@ fun Fragment.snack(msg: String, length: Int = Snackbar.LENGTH_SHORT) {
 
 fun Fragment.errAlert(msg: String) {
     requireContext().errAlert(msg)
+}
+
+fun Context.toastl(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
 }

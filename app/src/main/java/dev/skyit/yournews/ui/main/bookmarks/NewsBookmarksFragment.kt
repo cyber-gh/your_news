@@ -5,23 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import dagger.hilt.android.AndroidEntryPoint
 import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
-import dev.skyit.yournews.databinding.NewsArticleListItemBindingImpl
 import dev.skyit.yournews.databinding.NewsArticleListItemSmallBinding
 import dev.skyit.yournews.databinding.NewsBookmarksFragmentBinding
-import dev.skyit.yournews.repository.database.ArticleEntity
 import dev.skyit.yournews.repository.preferences.IUserPreferences
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.main.MainFragmentDirections
 import dev.skyit.yournews.ui.main.newsheadlines.options.ArticleOptionsDialog
+import dev.skyit.yournews.ui.main.newsheadlines.options.SharedArticleOptionViewModel
 import dev.skyit.yournews.ui.utils.*
 import dev.skyit.yournews.utils.toArrayList
 import java.lang.IllegalArgumentException
@@ -39,6 +38,7 @@ class NewsBookmarksFragment: BaseFragment(), INewsOptionHandler {
     private lateinit var binding: NewsBookmarksFragmentBinding
 
     private val vModel: NewsBookmarksViewModel by viewModels()
+    private val optionsModel: SharedArticleOptionViewModel by activityViewModels()
     private lateinit var adapter: NewsArticlesAdapter
 
     @Inject
@@ -80,6 +80,10 @@ class NewsBookmarksFragment: BaseFragment(), INewsOptionHandler {
             vModel.loadData()
             binding.swipeRefresh.isRefreshing = false
         }
+
+        optionsModel.articleDeletedEvent.observe(viewLifecycleOwner, Observer {
+            vModel.loadData()
+        })
 
     }
 
