@@ -26,4 +26,5 @@
     <string name="not_available">Not available yet</string>
     <string name="get_notifications">Get Notifications</string>
     <string name="use_mini_card">Use mini cards</string>
+    <string name="remove_bookmarks">Removed from bookmarks</string>
 </resources>

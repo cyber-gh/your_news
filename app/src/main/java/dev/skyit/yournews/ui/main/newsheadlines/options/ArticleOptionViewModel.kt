@@ -29,6 +29,12 @@ class ArticleOptionViewModel
         }
     }
 
+    fun removeBookmark() {
+        viewModelScope.launch {
+            favouriteNewsRepo.removeBookmark(articleEntity)
+        }
+    }
+
     fun getSource() {
         viewModelScope.launch {
             kotlin.runCatching {

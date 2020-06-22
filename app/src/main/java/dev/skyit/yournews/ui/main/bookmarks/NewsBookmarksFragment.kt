@@ -20,14 +20,21 @@ import dev.skyit.yournews.databinding.NewsBookmarksFragmentBinding
 import dev.skyit.yournews.repository.database.ArticleEntity
 import dev.skyit.yournews.repository.preferences.IUserPreferences
 import dev.skyit.yournews.ui.ArticleMinimal
+import dev.skyit.yournews.ui.main.MainFragmentDirections
+import dev.skyit.yournews.ui.main.newsheadlines.options.ArticleOptionsDialog
 import dev.skyit.yournews.ui.utils.*
 import dev.skyit.yournews.utils.toArrayList
 import java.lang.IllegalArgumentException
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 
+interface INewsOptionHandler {
+    fun handleOptions(article: ArticleMinimal)
+}
+
 @AndroidEntryPoint
-class NewsBookmarksFragment: BaseFragment() {
+class NewsBookmarksFragment: BaseFragment(), INewsOptionHandler {
 
     private lateinit var binding: NewsBookmarksFragmentBinding
 
@@ -50,7 +57,11 @@ class NewsBookmarksFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val cardType = if (userPreferences.useMiniCards) 0 else 1
-        adapter = NewsArticlesAdapter(cardType)
+        adapter = NewsArticlesAdapter(cardType, onItemClick = {
+            mainNavController.navigate(
+                MainFragmentDirections.actionMainFragmentToWebFragment(it.url)
+            )
+        }, optionsHandler = WeakReference(this))
 
 
         binding.recyclerList.adapter = adapter
@@ -79,64 +90,85 @@ class NewsBookmarksFragment: BaseFragment() {
         adapter.updateViewType(cardType)
     }
 
+    override fun handleOptions(article: ArticleMinimal) {
+        mainNavController.navigate(
+            MainFragmentDirections.actionMainFragmentToArticleOptionsDialog(
+                article.extended, ArticleOptionsDialog.OptionsFor.BOOKMARKED_ARTICLE
+            )
+        )
+    }
+
 
 }
 
-class NewsArticlesViewFactory: ElementHolderFactory<ArticleMinimal>() {
+class NewsArticlesViewFactory(
+    private var optionsHandler: WeakReference<INewsOptionHandler>
+): ElementHolderFactory<ArticleMinimal>() {
     override fun createHolder(
         inflater: LayoutInflater,
         viewType: Int
     ): BaseViewHolder<ArticleMinimal> {
         return when(viewType) {
-            0 -> createSmallItem(inflater)
-            1 -> createNormalItem(inflater)
+            0 -> {
+                val smallBinding = NewsArticleListItemSmallBinding.inflate(inflater)
+                SmallItemViewHolder(smallBinding)
+            }
+            1 -> {
+                val normalBinding = NewsArticleListItemBinding.inflate(inflater)
+                NormalItemViewHolder(normalBinding)
+
+            }
             else -> throw IllegalArgumentException("Unsupported view type")
         }
     }
 
-    private fun createNormalItem(inflater: LayoutInflater) : BaseViewHolder<ArticleMinimal> {
-        val binding = NewsArticleListItemBinding.inflate(inflater)
+    private inner class SmallItemViewHolder(private val binding: NewsArticleListItemSmallBinding)
+        : BaseViewHolder<ArticleMinimal>(binding.root) {
 
-        return object : BaseViewHolder<ArticleMinimal>(binding.root) {
-            override fun bind(item: ArticleMinimal) {
-                binding.data = item
-                if (item.imageLink != null) {
-                    binding.imageView.load(item.imageLink) {
-                        crossfade(true)
-                        placeholder(R.drawable.news_article_placeholder)
+        override fun bind(item: ArticleMinimal) {
+            super.bind(item)
+            binding.data = item
+            if (item.imageLink != null) {
+                binding.imageView.load(item.imageLink) {
+                    crossfade(true)
+                    placeholder(R.drawable.news_article_placeholder)
 
-                    }
                 }
             }
-
+            binding.optionsBtn.setOnClickListener {
+                optionsHandler.get()?.handleOptions(item)
+            }
         }
+
     }
 
-    private fun createSmallItem(inflater: LayoutInflater) : BaseViewHolder<ArticleMinimal> {
-        val binding = NewsArticleListItemSmallBinding.inflate(inflater)
+    private inner class NormalItemViewHolder(private val binding: NewsArticleListItemBinding)
+        : BaseViewHolder<ArticleMinimal>(binding.root) {
+        override fun bind(item: ArticleMinimal) {
+            super.bind(item)
+            binding.data = item
+            if (item.imageLink != null) {
+                binding.imageView.load(item.imageLink) {
+                    crossfade(true)
+                    placeholder(R.drawable.news_article_placeholder)
 
-        return object : BaseViewHolder<ArticleMinimal>(binding.root) {
-            override fun bind(item: ArticleMinimal) {
-                binding.data = item
-                if (item.imageLink != null) {
-                    binding.imageView.load(item.imageLink) {
-                        crossfade(true)
-                        placeholder(R.drawable.news_article_placeholder)
-
-                    }
                 }
             }
-
+            binding.optionsBtn.setOnClickListener {
+                optionsHandler.get()?.handleOptions(item)
+            }
         }
     }
-
-
-
 }
 
 class NewsArticlesAdapter(
-    private var vType: Int
-): AdvancedRecyclerAdapter<ArticleMinimal>(elementHolderFactory = NewsArticlesViewFactory()) {
+    private var vType: Int,
+    onItemClick: (ArticleMinimal) -> Unit,
+    optionsHandler: WeakReference<INewsOptionHandler>
+): AdvancedRecyclerAdapter<ArticleMinimal>(
+    elementHolderFactory = NewsArticlesViewFactory(optionsHandler),
+    onItemClicked = onItemClick) {
+
     override fun extractId(item: ArticleMinimal): Any {
         return item.url
     }

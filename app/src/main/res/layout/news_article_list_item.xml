@@ -62,19 +62,19 @@
 
         <TextView
             android:id="@+id/textView3"
+            style="@style/TitleStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:maxLines="3"
+            android:ellipsize="end"
             android:text="@{data.title}"
             app:autoSizeTextType="uniform"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
-            tools:text="Trump and Chip Makers Inlcuding Intel Seek Semiconductor Self-Sufficience"
-            style="@style/TitleStyle" />
+            tools:text="Trump and Chip Makers Inlcuding Intel Seek Semiconductor Self-Sufficience" />
 
         <TextView
             android:id="@+id/publish_time"
@@ -87,7 +87,7 @@
             tools:text="Yesterday" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/options_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"

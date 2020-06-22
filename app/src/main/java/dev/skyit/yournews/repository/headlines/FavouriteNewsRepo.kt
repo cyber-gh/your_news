@@ -8,6 +8,7 @@ import javax.inject.Inject
 interface IFavouriteNewsRepo {
     suspend fun getBookmarkedArticles() : List<ArticleEntity>
     suspend fun addBookmark(articleEntity: ArticleEntity)
+    suspend fun removeBookmark(articleEntity: ArticleEntity)
 }
 
 class FavouriteNewsRepo
@@ -20,6 +21,10 @@ class FavouriteNewsRepo
 
     override suspend fun addBookmark(articleEntity: ArticleEntity) {
         db.articlesDao().bookmarkArticle(articleEntity.url)
+    }
+
+    override suspend fun removeBookmark(articleEntity: ArticleEntity) {
+        db.articlesDao().removeBookmark(articleEntity.url)
     }
 
 }

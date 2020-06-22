@@ -16,8 +16,11 @@ interface ArticlesDao {
     @Query("update articles set isBookmarked = 1 where url = :url")
     suspend fun bookmarkArticle(url : String)
 
+    @Query("update articles set isBookmarked = 0 where url = :url")
+    suspend fun removeBookmark(url: String)
+
     @Insert
-    suspend fun insertAll(vararg articles: ArticleEntity)
+    suspend fun insertAll(articles: List<ArticleEntity>)
 
     @Query("SELECT * FROM articles where country = :country order by publishedAt desc")
     fun articlesDataSource(country: String): DataSource.Factory<Int, ArticleEntity>
@@ -30,4 +33,15 @@ interface ArticlesDao {
 
     @Query("select * from articles where url = :url")
     suspend fun findArticle(url: String) : ArticleEntity?
+
+
+    @Query("select * from articles where category = :category")
+    suspend fun getArticlesByCategory(category: String) : List<ArticleEntity>
+
+
+    @Query("select * from articles where category = :country")
+    suspend fun getArticlesByCountry(country: String) : List<ArticleEntity>
+
+    @Query("delete from articles where category = :category")
+    suspend fun deleteArticlesByCategory(category: String)
 }

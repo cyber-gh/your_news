@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,10 @@ import dev.skyit.yournews.ui.utils.snack
 @AndroidEntryPoint
 class ArticleOptionsDialog : BottomSheetDialogFragment() {
     private lateinit var binding: ArticleItemOptionsDialogBinding
+
+    enum class OptionsFor {
+        NEW_ARTICLE, BOOKMARKED_ARTICLE
+    }
 
     private val args: ArticleOptionsDialogArgs by navArgs()
 
@@ -39,8 +44,20 @@ class ArticleOptionsDialog : BottomSheetDialogFragment() {
         return R.style.CustomBottomSheetDialog
     }
 
+    private fun configureByMode(optionsFor: OptionsFor) {
+        if (optionsFor == OptionsFor.NEW_ARTICLE) {
+            binding.removeBookmarkBtn.isVisible = false
+        }
+
+        if (optionsFor == OptionsFor.BOOKMARKED_ARTICLE) {
+            binding.bookmarkBtn.isVisible = false
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        configureByMode(args.target)
 
         vModel.inject(args.article)
         binding.bookmarkBtn.setOnClickListener {
@@ -49,6 +66,13 @@ class ArticleOptionsDialog : BottomSheetDialogFragment() {
             snack("Article bookmarked")
             dismiss()
 
+        }
+
+        binding.removeBookmarkBtn.setOnClickListener {
+            vModel.removeBookmark()
+
+            snack("Article removed")
+            dismiss()
         }
 
         binding.shareBtn.setOnClickListener {
@@ -72,6 +96,8 @@ class ArticleOptionsDialog : BottomSheetDialogFragment() {
                 ArticleOptionsDialogDirections.actionArticleOptionsDialogToWebFragment(it)
             )
         })
+
+
     }
 
 }

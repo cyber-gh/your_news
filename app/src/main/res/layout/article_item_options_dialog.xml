@@ -17,6 +17,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/remove_bookmark_btn"
+        style="@style/IconButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/remove_bookmarks"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookmark_btn" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/share_btn"
         style="@style/IconButton"
         android:layout_width="0dp"
@@ -25,7 +35,7 @@
         android:text="@string/share"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookmark_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/remove_bookmark_btn" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/visit_source_btn"

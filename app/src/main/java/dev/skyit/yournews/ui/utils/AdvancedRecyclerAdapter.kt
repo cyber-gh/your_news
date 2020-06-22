@@ -9,8 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import java.lang.IllegalArgumentException
 
-abstract class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    abstract fun bind(item: T)
+open class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private var item: T? = null
+
+    open fun bind(item: T) {
+        this.item = item
+    }
+    fun setClickListener(listener: (T) -> Unit) {
+        itemView.setOnClickListener {
+            listener(item!!)
+        }
+    }
 }
 
 
@@ -21,7 +30,8 @@ abstract class ElementHolderFactory<T>() {
 
 abstract class AdvancedRecyclerAdapter<T>(
     private val items: ArrayList<T> = arrayListOf(),
-    private val elementHolderFactory: ElementHolderFactory<T>
+    private val elementHolderFactory: ElementHolderFactory<T>,
+    private val onItemClicked: ((T) -> Unit)? = null
 ) : RecyclerView.Adapter<BaseViewHolder<T>>() {
 
 
@@ -30,6 +40,11 @@ abstract class AdvancedRecyclerAdapter<T>(
     override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int) {
         val data = items[position]
         holder.bind(data)
+        if (onItemClicked != null) {
+            holder.setClickListener {
+                onItemClicked.invoke(it)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<T> {

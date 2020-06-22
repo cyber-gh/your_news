@@ -119,7 +119,7 @@ class NewsHeadlinesAdapter(
             binding.root.setOnClickListener {
                 onItemClick(data)
             }
-            binding.imageButton2.setOnClickListener {
+            binding.optionsBtn.setOnClickListener {
                 onItemOptionsClick(data)
             }
 
@@ -142,7 +142,7 @@ class NewsHeadlinesAdapter(
             binding.root.setOnClickListener {
                 onItemClick(data)
             }
-            binding.imageButton2.setOnClickListener {
+            binding.optionsBtn.setOnClickListener {
                 onItemOptionsClick(data)
             }
 

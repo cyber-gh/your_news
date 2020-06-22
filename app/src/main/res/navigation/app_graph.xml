@@ -64,6 +64,10 @@
         <action
             android:id="@+id/action_articleOptionsDialog_to_webFragment"
             app:destination="@id/webFragment" />
+        <argument
+            android:name="target"
+            app:argType="dev.skyit.yournews.ui.main.newsheadlines.options.ArticleOptionsDialog$OptionsFor"
+            android:defaultValue="NEW_ARTICLE" />
     </dialog>
     <fragment
         android:id="@+id/settingsFragment"

@@ -4,6 +4,9 @@ import androidx.paging.DataSource
 import dev.skyit.yournews.api.INetworkManger
 import dev.skyit.yournews.repository.database.ArticleEntity
 import dev.skyit.yournews.api.client.INewsAPIClient
+import dev.skyit.yournews.api.models.CategoryFilter
+import dev.skyit.yournews.api.models.CountryFilter
+import dev.skyit.yournews.api.models.Source
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.repository.converters.toEntity
 import dev.skyit.yournews.repository.database.AppDatabase
@@ -20,7 +23,12 @@ interface INewsHeadlinesRepository {
     fun loadNextPage(country: String, pageSize: Int)
     suspend fun resetArticles(forCountry: String) : Boolean
 
+}
 
+interface IAllNewsRepo {
+    suspend fun getNews(country: CountryFilter) : List<ArticleEntity>
+
+    //suspend fun getNews(sources: List<Source>) : List<ArticleEntity>
 }
 
 @InternalCoroutinesApi
@@ -29,15 +37,15 @@ class NewsRepository
         private val api: INewsAPIClient,
         private val db: AppDatabase,
         private val networkManager: INetworkManger
-    ) : INewsHeadlinesRepository {
+    ) : INewsHeadlinesRepository, IAllNewsRepo {
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
 
     private fun cache(forCountry: String, data: List<ArticleDTO>) {
-        val transformed = data.map { it.toEntity(forCountry) }.toTypedArray()
+        val transformed = data.map { it.toEntity(forCountry) }
         scope.launch {
-            db.articlesDao().insertAll(*transformed)
+            db.articlesDao().insertAll(transformed)
         }
     }
 
@@ -74,5 +82,19 @@ class NewsRepository
             false
         }
     }
+
+    override suspend fun getNews(country: CountryFilter): List<ArticleEntity> {
+        val local = db.articlesDao().getArticlesByCountry(country.toString())
+        return if (local.isEmpty()) { //also check if articles are too old
+            val newArticles = api.getHeadlines(country.toString()).map {
+                it.toEntity(country.toString())
+            }
+            db.articlesDao().insertAll(newArticles)
+            newArticles
+        } else {
+            local
+        }
+    }
+
 
 }
