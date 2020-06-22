@@ -40,6 +40,14 @@ class MainFragment : BaseFragment() {
         binding.appToolbar.onOpenSettings {
             findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
         }
+
+        controller.addOnDestinationChangedListener { controller, destination, arguments ->
+            if (destination.id == R.id.navigation_all_news) {
+                binding.appToolbar.elevation = 0f
+            } else {
+                binding.appToolbar.elevation = 4f
+            }
+        }
     }
 
 

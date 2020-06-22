@@ -15,7 +15,7 @@
         android:label="NewsBookmarksFragment"
         tools:layout="@layout/news_list_fragment"/>
     <fragment
-        android:id="@+id/navigation_sources"
+        android:id="@+id/navigation_all_news"
         android:name="dev.skyit.yournews.ui.main.sources.AllNewsFragment"
         android:label="NewsSourcesFragment"
         tools:layout="@layout/all_news_fragment"/>

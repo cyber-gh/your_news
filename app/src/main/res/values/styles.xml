@@ -42,4 +42,8 @@
         <item name="android:layout_height">2dp</item>
         <item name="android:background">@color/outline_color</item>
     </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.MaterialComponents.Button">
+        <item name="textAllCaps">false</item>
+    </style>
 </resources>

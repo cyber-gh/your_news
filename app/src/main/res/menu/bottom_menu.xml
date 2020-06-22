@@ -9,7 +9,7 @@
         />
 
     <item
-        android:id="@+id/navigation_sources"
+        android:id="@+id/navigation_all_news"
         android:title="@string/world"
         android:icon="@drawable/ic_baseline_star_border_24"/>
 
