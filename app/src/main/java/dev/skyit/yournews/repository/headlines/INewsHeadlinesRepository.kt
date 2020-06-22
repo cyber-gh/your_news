@@ -6,7 +6,6 @@ import dev.skyit.yournews.repository.database.ArticleEntity
 import dev.skyit.yournews.api.client.INewsAPIClient
 import dev.skyit.yournews.api.models.CategoryFilter
 import dev.skyit.yournews.api.models.CountryFilter
-import dev.skyit.yournews.api.models.Source
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.repository.converters.toEntity
 import dev.skyit.yournews.repository.database.AppDatabase
@@ -86,7 +85,7 @@ class NewsRepository
     override suspend fun getNews(country: CountryFilter): List<ArticleEntity> {
         val local = db.articlesDao().getArticlesByCountry(country.toString())
         return if (local.isEmpty()) { //also check if articles are too old
-            val newArticles = api.getHeadlines(country.toString()).map {
+            val newArticles = api.getHeadlinesByCountry(country.toString()).map {
                 it.toEntity(country.toString())
             }
             db.articlesDao().insertAll(newArticles)

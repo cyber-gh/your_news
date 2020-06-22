@@ -58,17 +58,21 @@ class SettingsFragment : BaseFragment() {
         }
 
         binding.prefferredCountry.setTitle("Preferred country")
-        binding.prefferredCountry.setSubtitle(userPreferences.preferredCountry)
+        val countryName = CountryFilter.fromString(userPreferences.preferredCountry).longName()
+        binding.prefferredCountry.setSubtitle(countryName)
 
         binding.prefferredCountry.setOnClickListener {
            requireContext().pick(
                msg = "Selected your country",
                choices = CountryFilter.values(),
                chosen = CountryFilter.fromString(userPreferences.preferredCountry),
+               stringifier = {
+                 longName()
+               },
                didPick = {
                    if (it != null) {
                        userPreferences.preferredCountry = it.toString()
-                       binding.prefferredCountry.setSubtitle(it.toString())
+                       binding.prefferredCountry.setSubtitle(it.longName())
                    }
                })
         }

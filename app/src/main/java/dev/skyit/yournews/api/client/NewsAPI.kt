@@ -30,7 +30,7 @@ interface INewsAPIClient {
     }
 
 
-    suspend fun getHeadlines(country: String) : List<ArticleDTO>
+    suspend fun getHeadlinesByCountry(country: String) : List<ArticleDTO>
     suspend fun getHeadlinesByCategory(category: String) : List<ArticleDTO>
     suspend fun getHeadlinesPaged(country: String = "us", pageNumber: Int, pageSize: Int) : List<ArticleDTO>
 
@@ -74,13 +74,21 @@ class NewsAPIClient @Inject constructor(): INewsAPIClient{
             .create(INewsAPIClient.NewsAPIService::class.java)
     }
 
-    override suspend fun getHeadlines(country: String): List<ArticleDTO> {
-        val options = hashMapOf("country" to country)
+    override suspend fun getHeadlinesByCountry(country: String): List<ArticleDTO> {
+        val options = hashMapOf(
+            "country" to country,
+            "page" to 1.toString(),
+            "pageSize" to 100.toString()
+            )
         return newsAPIService.getHeadlines(options).articles
     }
 
     override suspend fun getHeadlinesByCategory(category: String): List<ArticleDTO> {
-        val options = hashMapOf("category" to category)
+        val options = hashMapOf(
+            "category" to category,
+            "page" to 1.toString(),
+            "pageSize" to 100.toString()
+        )
         return newsAPIService.getHeadlines(options).articles
     }
 

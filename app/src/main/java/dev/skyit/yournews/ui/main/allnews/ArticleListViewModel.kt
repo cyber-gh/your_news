@@ -32,7 +32,7 @@ class ArticleListViewModel
             kotlin.runCatching {
                 getArticles(articlesSource)
             }.onSuccess {
-                val data = it.map { it.toMinimal() }
+                val data = it.distinctBy { it.url }.map { it.toMinimal() }
                 articles.postValue(data)
             }.onFailure {
                 Timber.e(it)

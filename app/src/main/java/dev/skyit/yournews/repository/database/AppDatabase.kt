@@ -13,7 +13,7 @@ import dev.skyit.yournews.repository.database.dao.SourcesDao
 @TypeConverters(SpecialTypeConverters::class)
 @Database(
     entities = [ArticleEntity::class, SourceExtended::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
