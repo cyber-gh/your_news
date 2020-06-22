@@ -15,7 +15,7 @@ import dev.skyit.yournews.BaseFragment
 import dev.skyit.yournews.R
 import dev.skyit.yournews.databinding.NewsArticleListItemBinding
 import dev.skyit.yournews.databinding.NewsArticleListItemSmallBinding
-import dev.skyit.yournews.databinding.NewsBookmarksFragmentBinding
+import dev.skyit.yournews.databinding.NewsListFragmentBinding
 import dev.skyit.yournews.repository.preferences.IUserPreferences
 import dev.skyit.yournews.ui.ArticleMinimal
 import dev.skyit.yournews.ui.main.MainFragmentDirections
@@ -35,7 +35,7 @@ interface INewsOptionHandler {
 @AndroidEntryPoint
 class NewsBookmarksFragment: BaseFragment(), INewsOptionHandler {
 
-    private lateinit var binding: NewsBookmarksFragmentBinding
+    private lateinit var binding: NewsListFragmentBinding
 
     private val vModel: NewsBookmarksViewModel by viewModels()
     private val optionsModel: SharedArticleOptionViewModel by activityViewModels()
@@ -49,7 +49,7 @@ class NewsBookmarksFragment: BaseFragment(), INewsOptionHandler {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = NewsBookmarksFragmentBinding.inflate(inflater)
+        binding = NewsListFragmentBinding.inflate(inflater)
         return binding.root
     }
 

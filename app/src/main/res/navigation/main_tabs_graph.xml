@@ -13,10 +13,10 @@
         android:id="@+id/navigation_bookmarks"
         android:name="dev.skyit.yournews.ui.main.bookmarks.NewsBookmarksFragment"
         android:label="NewsBookmarksFragment"
-        tools:layout="@layout/news_bookmarks_fragment"/>
+        tools:layout="@layout/news_list_fragment"/>
     <fragment
         android:id="@+id/navigation_sources"
-        android:name="dev.skyit.yournews.ui.main.sources.NewsSourcesFragment"
+        android:name="dev.skyit.yournews.ui.main.sources.AllNewsFragment"
         android:label="NewsSourcesFragment"
-        tools:layout="@layout/news_sources_fragment"/>
+        tools:layout="@layout/all_news_fragment"/>
 </navigation>

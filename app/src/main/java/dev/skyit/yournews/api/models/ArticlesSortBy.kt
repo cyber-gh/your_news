@@ -36,7 +36,12 @@ enum class CategoryFilter {
             SCIENCE -> "Science"
             SPORTS -> "Sports"
             TECHNOLOGY -> "Technology"
+
         }
+    }
+
+    fun toQueryParameter() : String {
+        return this.toString().toLowerCase()
     }
 }
 

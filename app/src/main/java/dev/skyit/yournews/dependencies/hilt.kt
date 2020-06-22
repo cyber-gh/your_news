@@ -12,10 +12,7 @@ import dev.skyit.yournews.api.NetworkManager
 import dev.skyit.yournews.api.client.INewsAPIClient
 import dev.skyit.yournews.api.client.NewsAPIClient
 import dev.skyit.yournews.repository.database.AppDatabase
-import dev.skyit.yournews.repository.headlines.FavouriteNewsRepo
-import dev.skyit.yournews.repository.headlines.IFavouriteNewsRepo
-import dev.skyit.yournews.repository.headlines.INewsHeadlinesRepository
-import dev.skyit.yournews.repository.headlines.NewsRepository
+import dev.skyit.yournews.repository.headlines.*
 import dev.skyit.yournews.repository.newsources.INewsSourceRepo
 import dev.skyit.yournews.repository.newsources.NewsSourceRepo
 import dev.skyit.yournews.repository.preferences.IUserPreferences
@@ -88,5 +85,10 @@ abstract class ArticlesRepositoryModule {
     @Singleton
     @Binds
     abstract fun bindSourcesRepo(sourcesRepo: NewsSourceRepo) : INewsSourceRepo
+
+    @OptIn(InternalCoroutinesApi::class)
+    @Singleton
+    @Binds
+    abstract fun bindAllNewsRepo(repo: NewsRepository) : IAllNewsRepo
 }
 

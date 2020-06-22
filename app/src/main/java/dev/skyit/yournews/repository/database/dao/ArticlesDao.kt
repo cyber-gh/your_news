@@ -3,6 +3,7 @@ package dev.skyit.yournews.repository.database.dao
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import dev.skyit.yournews.repository.database.ArticleEntity
 
@@ -19,7 +20,7 @@ interface ArticlesDao {
     @Query("update articles set isBookmarked = 0 where url = :url")
     suspend fun removeBookmark(url: String)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(articles: List<ArticleEntity>)
 
     @Query("SELECT * FROM articles where country = :country order by publishedAt desc")

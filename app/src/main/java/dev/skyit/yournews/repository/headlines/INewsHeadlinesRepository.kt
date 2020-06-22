@@ -27,7 +27,7 @@ interface INewsHeadlinesRepository {
 
 interface IAllNewsRepo {
     suspend fun getNews(country: CountryFilter) : List<ArticleEntity>
-
+    suspend fun getNews(categoryFilter: CategoryFilter ) : List<ArticleEntity>
     //suspend fun getNews(sources: List<Source>) : List<ArticleEntity>
 }
 
@@ -88,6 +88,19 @@ class NewsRepository
         return if (local.isEmpty()) { //also check if articles are too old
             val newArticles = api.getHeadlines(country.toString()).map {
                 it.toEntity(country.toString())
+            }
+            db.articlesDao().insertAll(newArticles)
+            newArticles
+        } else {
+            local
+        }
+    }
+
+    override suspend fun getNews(categoryFilter: CategoryFilter): List<ArticleEntity> {
+        val local = db.articlesDao().getArticlesByCategory(categoryFilter.toString())
+        return if (local.isEmpty()) { //also check if articles are too old
+            val newArticles = api.getHeadlinesByCategory(categoryFilter.toQueryParameter()).map {
+                it.toEntity(categoryFilter.toQueryParameter())
             }
             db.articlesDao().insertAll(newArticles)
             newArticles
