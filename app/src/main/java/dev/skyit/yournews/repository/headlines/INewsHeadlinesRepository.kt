@@ -9,6 +9,8 @@ import dev.skyit.yournews.api.models.CountryFilter
 import dev.skyit.yournews.api.models.headlines.ArticleDTO
 import dev.skyit.yournews.repository.converters.toEntity
 import dev.skyit.yournews.repository.database.AppDatabase
+import dev.skyit.yournews.repository.newsources.INewsSourceRepo
+import dev.skyit.yournews.repository.newsources.NewsSourceRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -35,7 +37,8 @@ class NewsRepository
     @Inject constructor(
         private val api: INewsAPIClient,
         private val db: AppDatabase,
-        private val networkManager: INetworkManger
+        private val networkManager: INetworkManger,
+        private val sourcesRepo: INewsSourceRepo
     ) : INewsHeadlinesRepository, IAllNewsRepo {
 
     private val scope = CoroutineScope(Dispatchers.IO)
@@ -86,7 +89,7 @@ class NewsRepository
         val local = db.articlesDao().getArticlesByCountry(country.toString())
         return if (local.isEmpty()) { //also check if articles are too old
             val newArticles = api.getHeadlinesByCountry(country.toString()).map {
-                it.toEntity(country.toString())
+                it.toEntity(country = country.toString())
             }
             db.articlesDao().insertAll(newArticles)
             newArticles
@@ -98,8 +101,15 @@ class NewsRepository
     override suspend fun getNews(categoryFilter: CategoryFilter): List<ArticleEntity> {
         val local = db.articlesDao().getArticlesByCategory(categoryFilter.toString())
         return if (local.isEmpty()) { //also check if articles are too old
+            val englishSources = sourcesRepo.getSourcesByLang("en").map {
+                it.name
+            }.toSet()
+
+
             val newArticles = api.getHeadlinesByCategory(categoryFilter.toQueryParameter()).map {
-                it.toEntity(categoryFilter.toQueryParameter())
+                it.toEntity(category = categoryFilter.toQueryParameter())
+            }.filter{
+                it.source.name in englishSources
             }
             db.articlesDao().insertAll(newArticles)
             newArticles

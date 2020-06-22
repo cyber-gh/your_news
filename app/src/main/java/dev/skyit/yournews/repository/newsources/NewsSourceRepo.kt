@@ -7,6 +7,8 @@ import javax.inject.Inject
 
 interface INewsSourceRepo {
     suspend fun getSource(name: String) : SourceExtended?
+
+    suspend fun getSourcesByLang(langCode: String) : List<SourceExtended>
 }
 
 class NewsSourceRepo
@@ -22,6 +24,15 @@ class NewsSourceRepo
         }
 
         return db.sourcesDao().findSourceBy(name.toLowerCase())
+    }
+
+    override suspend fun getSourcesByLang(langCode: String): List<SourceExtended> {
+        if (isDatabaseEmpty()) {
+            val allSources = api.getAllSources()
+            db.sourcesDao().insertAll(allSources)
+        }
+
+        return db.sourcesDao().getSourcesByLang(langCode)
     }
 
 

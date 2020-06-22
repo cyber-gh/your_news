@@ -17,4 +17,7 @@ interface SourcesDao {
 
     @Query("select count(*) from sources")
     suspend fun countSources() : Long
+
+    @Query("select * from sources where language = :langCode")
+    suspend fun getSourcesByLang(langCode: String) : List<SourceExtended>
 }
