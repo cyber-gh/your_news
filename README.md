@@ -6,7 +6,8 @@
 
 <h4>Project highlights</h4>
 <ul>
-<li>Retrofit + Room</li>
+<li>Retrofit</li>
+<li>Room</li>  
 <li>Coroutines</li>
 <li>Search with deboucing using flow</li>
 <li>Android Paging library + sample usage of boundary callback and caching</li>
@@ -14,6 +15,6 @@
 <li>Utility classes for RecycyclerView Adapters with DiffUtil</li>
 <li>Usage of Dagger Hilt for DI (alpha release)</li>
 <li>Architecture navigation with navigation graphs</li>
-<li>Adapted for landscape and portair mode</li>
+<li>Adapted for landscape and portrait mode</li>
 </ul>
 
