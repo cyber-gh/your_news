@@ -1,5 +1,5 @@
 
-<h1>News app (Kotlin)</h1>
+<h1>News app (Kotlin) - Public Mirror</h1>
 <h3># Google workshop app</h3>
 
 <h4>MVVM style + Databinding</h4>
